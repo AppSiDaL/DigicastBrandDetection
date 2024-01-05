@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import React, { ChangeEvent } from "react";
 interface FileInputProps {
   setSelectedFile: (file: File | null) => void;
@@ -19,7 +20,6 @@ export default function FileInput({
   return (
     <>
       <div>
-        <h1 style={{ textTransform: "uppercase" }}>Pagina para Testear</h1>
         <input
           type="file"
           accept=".m4,.jpg,.jpeg,.png"
@@ -34,9 +34,10 @@ export default function FileInput({
       </div>
       <div>
         {selectedFile && (
-          <img
+          <Image
             src={URL.createObjectURL(selectedFile)}
             width="200"
+            height="200"
             alt="Selected"
           />
         )}

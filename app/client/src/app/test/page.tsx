@@ -5,7 +5,9 @@ import ShowJSON from "./components/ShowJSON";
 import fileService from "../services/file";
 import NavBar from "../components/NavBar";
 import DropDown from "./components/DropDown";
-
+import { Stage, Layer, Rect, Image, Label, Text, Group } from "react-konva";
+import ImageUploaded from "./components/ImageUploaded";
+import useImage from "use-image";
 export default function Page() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [response, setResponse] = useState<any>(null);
@@ -46,6 +48,57 @@ export default function Page() {
       label: "Yolo v8 Bacardi",
     },
   ];
+  const URLImage = ({ url, width, height }: any) => {
+    const [image] = useImage(url);
+    return <Image width={width} height={height} image={image} alt="" />;
+  };
+  function BoundingBoxes({ response, imageURL }: any) {
+    return (
+      <Stage width={response.image.width} height={response.image.height}>
+        <Layer>
+          <URLImage
+            url={imageURL}
+            width={response.image.width}
+            height={response.image.height}
+          />
+          <Rect
+            x={0}
+            y={0}
+            width={response.image.width}
+            height={response.image.height}
+            stroke="red"
+            strokeWidth={2}
+          />
+          {response.predictions.map((prediction: any, i: any) => {
+            const x1 = prediction.x - prediction.width / 2;
+            const y1 = prediction.y - prediction.height / 2;
+            return (
+              <Group key={i}>
+                <Rect
+                  x={x1}
+                  y={y1}
+                  width={prediction.width}
+                  height={prediction.height}
+                  stroke="red"
+                  strokeWidth={2}
+                />
+                <Text
+                  fill="blue"
+                  text={`${prediction.class}-${prediction.confidence.toFixed(
+                    2
+                  )}`}
+                  fontSize={15}
+                  x={x1 + 5} // Ajusta estos valores según necesites
+                  y={y1 + 5} // Ajusta estos valores según necesites
+                />
+              </Group>
+            );
+          })}
+        </Layer>
+      </Stage>
+    );
+  }
+
   const handleUpload = async () => {
     const image = await loadImageBase64(selectedFile);
     if (selectedFile) {
@@ -76,9 +129,16 @@ export default function Page() {
           selectedFile={selectedFile}
           handleUpload={handleUpload}
         />
+        {!response && <ImageUploaded selectedFile={selectedFile} />}
         <br />
         {loading && <h1>Cargando ...</h1>}
         <ShowJSON response={response} />
+        {response && selectedFile && (
+          <BoundingBoxes
+            response={response}
+            imageURL={URL.createObjectURL(selectedFile)}
+          />
+        )}
       </div>
     </>
   );

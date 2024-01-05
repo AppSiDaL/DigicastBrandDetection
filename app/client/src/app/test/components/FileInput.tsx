@@ -32,16 +32,7 @@ export default function FileInput({
           Enviar Archivo
         </button>
       </div>
-      <div>
-        {selectedFile && (
-          <Image
-            src={URL.createObjectURL(selectedFile)}
-            width="200"
-            height="200"
-            alt="Selected"
-          />
-        )}
-      </div>
+
     </>
   );
 }

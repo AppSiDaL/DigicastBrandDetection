@@ -25,14 +25,15 @@ export default function FileInput({
           accept=".m4,.jpg,.jpeg,.png"
           onChange={handleFileChange}
         />
+        <br />
+        <br />
         <button
-          style={{ borderColor: "white", borderWidth: 1 }}
+          className="border-2 border-slate-50"
           onClick={handleUpload}
         >
-          Enviar Archivo
+          Probar Modelo
         </button>
       </div>
-
     </>
   );
 }

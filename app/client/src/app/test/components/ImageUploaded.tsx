@@ -9,8 +9,8 @@ export default function ImageUploaded({ selectedFile }: ImageUploadedProps) {
       {selectedFile && (
         <Image
           src={URL.createObjectURL(selectedFile)}
-          width="200"
-          height="200"
+          width={200}
+          height={200}
           alt="Selected"
         />
       )}

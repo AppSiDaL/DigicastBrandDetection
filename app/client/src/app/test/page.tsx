@@ -12,6 +12,7 @@ export default function Page() {
   const [response, setResponse] = useState<any>(null);
   const [model, setModel] = useState("roboflow-nestle" as string);
   const [loading, setLoading] = useState(false);
+  const [confidence, setConfidence] = useState(40);
   const loadImageBase64 = (file: any) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -33,7 +34,7 @@ export default function Page() {
     },
     {
       value: "roboflow-bimbo",
-      url: "https://detect.roboflow.com/bimbo-sv8lq/2",
+      url: "https://detect.roboflow.com/bimbo-sv8lq/6",
       label: "Roboflow 3.0 Bimbo",
     },
     {
@@ -54,7 +55,7 @@ export default function Page() {
       const url = modelsURL.find((m) => m.value === model)?.url;
       if (url) {
         setLoading(true); // Set loading to true before the request
-        const response = await fileService.testImage(image, url);
+        const response = await fileService.testImage(image, url, confidence);
         setLoading(false); // Set loading to false after the request is done
         setResponse(response);
         console.log(response);
@@ -72,6 +73,21 @@ export default function Page() {
       <br />
       <div className="text-center">
         <DropDown models={modelsURL} model={model} setModel={setModel} />
+        <label>
+          Confidence:
+          <input
+            max={100}
+            value={confidence}
+            className="border-2 border-slate-50 text-slate-900"
+            step={5}
+            min={0}
+            type="number"
+            onChange={(e) => setConfidence(parseInt(e.target.value))}
+          />
+          %
+          <br />
+        </label>
+
         <br />
         <FileInput
           setSelectedFile={setSelectedFile}

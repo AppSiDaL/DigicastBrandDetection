@@ -22,7 +22,7 @@ export default function FileInput({
       <div>
         <input
           type="file"
-          accept=".m4,.jpg,.jpeg,.png"
+          accept=".mp4,.jpg,.jpeg,.png"
           onChange={handleFileChange}
         />
         <br />

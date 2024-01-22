@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import FileInput from "./components/FileInput";
 import ShowJSON from "./components/ShowJSON";
 import fileService from "../services/file";
+import insertService from "../services/insert";
 import NavBar from "../components/NavBar";
 import DropDown from "./components/DropDown";
 import ImageUploaded from "./components/ImageUploaded";
@@ -57,6 +58,10 @@ export default function Page() {
         setLoading(true); // Set loading to true before the request
         const response = await fileService.testImage(image, url, confidence);
         setLoading(false); // Set loading to false after the request is done
+        if (response){
+          const responseInsert=await insertService.insert(response)
+          console.log(responseInsert)
+        }
         setResponse(response);
         console.log(response);
       }

@@ -9,12 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@files-ui/react": "^1.2.4",
+    "@tabler/icons-react": "^2.47.0",
     "axios": "^1.6.2",
     "konva": "^9.3.0",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",
     "react-konva": "^18.2.10",
+    "react-range": "^1.8.14",
     "use-image": "^1.1.1"
   },
   "devDependencies": {

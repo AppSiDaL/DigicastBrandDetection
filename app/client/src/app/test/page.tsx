@@ -8,6 +8,7 @@ import NavBar from "../components/NavBar";
 import DropDown from "./components/DropDown";
 import ImageUploaded from "./components/ImageUploaded";
 import BoundingBoxes from "./components/BoundingBoxes";
+import MainCard from "./components/MainCard";
 export default function Page() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [response, setResponse] = useState<any>(null);
@@ -72,10 +73,9 @@ export default function Page() {
     }
   };
   return (
-    <>
+    <div className=" bg-gray-200">
       <NavBar />
-      <h1 className="uppercase text-center font-bold">Testing Page</h1>
-      <br />
+      <MainCard />
       <div className="text-center">
         <DropDown models={modelsURL} model={model} setModel={setModel} />
         <label>
@@ -113,6 +113,6 @@ export default function Page() {
           <h2>{`Predicciones Encontradas: ${response.predictions.length}`}</h2>
         )}
       </div>
-    </>
+    </div>
   );
 }

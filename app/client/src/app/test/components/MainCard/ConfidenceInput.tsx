@@ -1,24 +1,29 @@
-"use client"
-import React, { useState } from "react";
+import React from "react";
 import { Range } from "react-range";
 
-export default function ConfidenceInput() {
-  const [value, setValue] = useState([50]);
-    
-  return (
-    <div>
-      <label
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-      >
-        Confidence
-      </label>
+interface ConfidenceInputProps {
+  confidece: number;
+  setConfidence: React.Dispatch<React.SetStateAction<number>>;
+}
 
+export default function ConfidenceInput({
+  confidece,
+  setConfidence,
+}: ConfidenceInputProps) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        flexWrap: "wrap",
+      }}
+    >
       <Range
+        values={[confidece]}
         step={1}
         min={0}
         max={100}
-        values={value}
-        onChange={(values) => setValue(values)}
+        onChange={(values) => setConfidence(values[0])}
         renderTrack={({ props, children }) => (
           <div
             {...props}
@@ -32,16 +37,43 @@ export default function ConfidenceInput() {
             {children}
           </div>
         )}
-        renderThumb={({ props }) => (
+        renderThumb={({ props, isDragged }) => (
           <div
             {...props}
             style={{
               ...props.style,
-              height: "22px",
-              width: "22px",
-              backgroundColor: "#999",
+              height: "32px",
+              width: "32px",
+              borderRadius: "4px",
+              backgroundColor: "#FFF",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
-          />
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: "-24px",
+                color: "#fff",
+                fontWeight: "bold",
+                fontSize: "12px",
+                fontFamily: "Arial,Helvetica Neue,Helvetica,sans-serif",
+                padding: "2px",
+                borderRadius: "4px",
+                backgroundColor: "#548BF4",
+              }}
+            >
+              {confidece.toFixed(1)}
+            </div>
+            <div
+              style={{
+                height: "16px",
+                width: "5px",
+                backgroundColor: isDragged ? "#548BF4" : "#CCC",
+              }}
+            />
+          </div>
         )}
       />
     </div>

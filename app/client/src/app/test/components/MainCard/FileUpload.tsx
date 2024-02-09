@@ -9,10 +9,14 @@ import {
 } from "@files-ui/react";
 
 import React from "react";
-const BASE_URL = "https://www.myserver.com";
+interface FileUploadProps {
+  setExtFiles: React.Dispatch<React.SetStateAction<ExtFile[]>>;
+  extFiles: ExtFile[];
+  handleUpload: () => Promise<void>;
 
-export default function FileUpload() {
-  const [extFiles, setExtFiles] = React.useState<ExtFile[]>([]);
+}
+
+export default function FileUpload({extFiles,setExtFiles,handleUpload}: FileUploadProps) {
   const [imageSrc, setImageSrc] = React.useState<File | string | undefined>(
     undefined
   );

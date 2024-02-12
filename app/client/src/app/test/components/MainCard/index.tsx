@@ -8,17 +8,25 @@ import SourceTabs from "./SourceTabs";
 import "./MainCard.css";
 import InferenceCard from "./InferenceCard";
 import fileService from "@/app/services/file";
+import insertService from "@/app/services/insert";
 import { ExtFile } from "@files-ui/react";
+import CustomInput from "./CustomInput";
 
-export default function MainCard() {
+interface MainCardProps {
+  server: string;
+  setServer: React.Dispatch<React.SetStateAction<string>>;
+}
+export default function MainCard({ server, setServer }: MainCardProps) {
   const [isButtonPressed, setIsButtonPressed] = useState(false);
-  const [model, setModel] = useState("roboflow-nestle");
+  const [model, setModel] = useState("yolo-v8-bimbo");
   const [response, setResponse] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [confidence, setConfidence] = useState(40);
   const [extFiles, setExtFiles] = React.useState<ExtFile[]>([]);
+  const [source, setSource] = useState<string>("image");
+  const [url, setUrl] = useState<string>("");
 
-  const modelsURL = [
+  const modelsURLRoboflow = [
     {
       value: "roboflow-nestle",
       url: "https://detect.roboflow.com/nestle-tp8gk/2",
@@ -45,6 +53,13 @@ export default function MainCard() {
       label: "Yolo v8 Bacardi",
     },
   ];
+  const modelsURLInference = [
+    {
+      value: "yolov8-bimbo",
+      url: "http://localhost:8000/api/insert",
+      label: "Yolo v8 Bimbo",
+    },
+  ];
   const loadImageBase64 = (file: any) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -54,9 +69,39 @@ export default function MainCard() {
     });
   };
   const handleUpload = async () => {
-    const image = await loadImageBase64(extFiles[0].file);
-    if (extFiles[0]) {
-      const url = modelsURL.find((m) => m.value === model)?.url;
+    if (server === "inference") {
+      if (source === "youtube") {
+        const payload = {
+          modelo: model,
+          source: url,
+          confidence: confidence,
+        };
+        await insertService.insert(payload);
+      } else {
+        const image = await loadImageBase64(extFiles[0].file);
+        if (extFiles[0]) {
+          const url = modelsURLInference.find((m) => m.value === model)?.url;
+          if (url) {
+            setLoading(true); // Set loading to true before the request
+            const response = await fileService.testImage(
+              image,
+              url,
+              confidence
+            );
+            setLoading(false); // Set loading to false after the request is done
+            setResponse(response);
+            console.log(response);
+          }
+        }
+        if (!extFiles[0]) {
+          alert("Por favor, selecciona un archivo antes de enviar.");
+          return;
+        }
+      }
+    } else {
+      const image = await loadImageBase64(extFiles[0].file);
+
+      const url = modelsURLRoboflow.find((m) => m.value === model)?.url;
       if (url) {
         setLoading(true); // Set loading to true before the request
         const response = await fileService.testImage(image, url, confidence);
@@ -64,10 +109,10 @@ export default function MainCard() {
         setResponse(response);
         console.log(response);
       }
-    }
-    if (!extFiles[0]) {
-      alert("Por favor, selecciona un archivo antes de enviar.");
-      return;
+      if (!extFiles[0]) {
+        alert("Por favor, selecciona un archivo antes de enviar.");
+        return;
+      }
     }
   };
   return (
@@ -75,23 +120,30 @@ export default function MainCard() {
       <div className="sm:p-8 bg-white rounded-lg shadow-xl dark:bg-gray-700 mr-4 ml-4 mt-4 flex flex-row">
         <div className={`main-card ${isButtonPressed ? "animate" : ""}`}>
           <Title />
-          <InferenceTabs />
+          <InferenceTabs server={server} setServer={setServer} />
           <form className="mt-8 space-y-6">
             <ModelSelect
               model={model}
               setModel={setModel}
-              modelsURL={modelsURL}
+              modelsURL={
+                server === "roboflow" ? modelsURLRoboflow : modelsURLInference
+              }
             />
             <ConfidenceInput
               confidece={confidence}
               setConfidence={setConfidence}
             />
-            <SourceTabs />
-            <FileUpload
-              extFiles={extFiles}
-              setExtFiles={setExtFiles}
-              handleUpload={handleUpload}
-            />
+            <SourceTabs source={source} setSource={setSource} />
+            {source === "youtube" ? (
+              <CustomInput url={url} setUrl={setUrl} />
+            ) : (
+              <FileUpload
+                extFiles={extFiles}
+                setExtFiles={setExtFiles}
+                handleUpload={handleUpload}
+              />
+            )}
+
             <button
               type="submit"
               onClick={(event) => {

@@ -7,12 +7,12 @@ from django.http import StreamingHttpResponse
 import requests
 import time
 
+
 def send_discord_notification(webhook_url, content):
-    data = {
-        "content": content
-    }
+    data = {"content": content}
     response = requests.post(webhook_url, data=data)
     return response
+
 
 def conectar_bd():
     # Establecemos la conexión con la base de datos PostgreSQL
@@ -24,6 +24,7 @@ def conectar_bd():
         password="AVNS_buehwtFO-rCTxOaLJOz",
     )
     return cnx
+
 
 def insertar_datos(timestamp, classes, source):
     conexion = conectar_bd()
@@ -69,32 +70,37 @@ def api(request):
     )
 
 
-
-
 @csrf_exempt
 def insert(request):
     try:
         data = json.loads(request.body)
-        model_path = data.get('modelo')
-        source = data.get('source')
-        confidence = data.get('confidence')
+        print(data)
+        modelsPath = {
+            "yolo-v8-bimbo": "../models/bimbo_best.pt",
+        }
+        model_path = modelsPath[data.get("modelo")]
+        source = str(data.get("source"))
+        confidence = data.get("confidence")
     except json.JSONDecodeError:
-        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
 
     model = YOLO(model_path)
 
     def event_stream():
-        results = model(source, stream=True, show=False, conf_thres=confidence)
+        results = model(source, stream=True, show=False, conf=(confidence / 100))
         for r in results:
             class_names = [model.names[int(i)] for i in r.boxes.cls]
             if len(class_names) > 0:
                 print("detection")
                 print(class_names)
-                send_discord_notification("https://discord.com/api/webhooks/1204850580007157801/L_jwa2YsN8PSyKdLKWRgyWuqfkZHeJW3yAiYgEQYqXREPlyFPolNyKZo0D0_9J6TS6p0", "Detection has been made: " + ', '.join(class_names))
-                insertar_datos(int(time.time() * 1000), ', '.join(class_names), source)
-                yield 'data: %s\n\n' % ', '.join(class_names)
+                send_discord_notification(
+                    "https://discord.com/api/webhooks/1204850580007157801/L_jwa2YsN8PSyKdLKWRgyWuqfkZHeJW3yAiYgEQYqXREPlyFPolNyKZo0D0_9J6TS6p0",
+                    "Detection has been made: " + ", ".join(class_names),
+                )
+                insertar_datos(int(time.time() * 1000), ", ".join(class_names), source)
+                yield "data: %s\n\n" % ", ".join(class_names)
             else:
                 print("no detection")
-                yield 'data: %s\n\n' % "no detection"
+                yield "data: %s\n\n" % "no detection"
 
-    return StreamingHttpResponse(event_stream(), content_type='text/event-stream')
+    return StreamingHttpResponse(event_stream(), content_type="text/event-stream")

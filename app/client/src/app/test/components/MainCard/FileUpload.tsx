@@ -24,7 +24,6 @@ export default function FileUpload({extFiles,setExtFiles,handleUpload}: FileUplo
     undefined
   );
   const updateFiles = (incommingFiles: ExtFile[]) => {
-    console.log("incomming files", incommingFiles);
     setExtFiles(incommingFiles);
   };
   const onDelete = (id: FileMosaicProps["id"]) => {

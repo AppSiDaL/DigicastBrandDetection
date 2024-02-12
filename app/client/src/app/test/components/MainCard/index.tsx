@@ -12,7 +12,7 @@ import { ExtFile } from "@files-ui/react";
 
 export default function MainCard() {
   const [isButtonPressed, setIsButtonPressed] = useState(false);
-  const [model, setModel] = useState("select model" as string);
+  const [model, setModel] = useState("roboflow-nestle");
   const [response, setResponse] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [confidence, setConfidence] = useState(40);
@@ -55,7 +55,6 @@ export default function MainCard() {
   };
   const handleUpload = async () => {
     const image = await loadImageBase64(extFiles[0].file);
-    console.log("image");
     if (extFiles[0]) {
       const url = modelsURL.find((m) => m.value === model)?.url;
       if (url) {
@@ -73,7 +72,7 @@ export default function MainCard() {
   };
   return (
     <div>
-      <div className="sm:p-8 bg-white rounded-lg shadow-xl dark:bg-gray-700 m-5 flex flex-row">
+      <div className="sm:p-8 bg-white rounded-lg shadow-xl dark:bg-gray-700 mr-4 ml-4 mt-4 flex flex-row">
         <div className={`main-card ${isButtonPressed ? "animate" : ""}`}>
           <Title />
           <InferenceTabs />
@@ -106,7 +105,14 @@ export default function MainCard() {
             </button>
           </form>
         </div>
-        {isButtonPressed && <InferenceCard />}
+        {isButtonPressed && extFiles[0] && response && (
+          <InferenceCard
+            response={response}
+            imageURL={
+              extFiles[0]?.file && URL.createObjectURL(extFiles[0].file)
+            }
+          />
+        )}
       </div>
     </div>
   );

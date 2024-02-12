@@ -10,6 +10,7 @@ export default function ConfidenceInput({
   confidece,
   setConfidence,
 }: ConfidenceInputProps) {
+  let thumbKey = 0;
   return (
     <div
       style={{
@@ -24,57 +25,65 @@ export default function ConfidenceInput({
         min={0}
         max={100}
         onChange={(values) => setConfidence(values[0])}
-        renderTrack={({ props, children }) => (
-          <div
-            {...props}
-            style={{
-              ...props.style,
-              height: "6px",
-              width: "100%",
-              backgroundColor: "#ccc",
-            }}
-          >
-            {children}
-          </div>
-        )}
-        renderThumb={({ props, isDragged }) => (
-          <div
-            {...props}
-            style={{
-              ...props.style,
-              height: "32px",
-              width: "32px",
-              borderRadius: "4px",
-              backgroundColor: "#FFF",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+        renderTrack={({ props, children }) => {
+          thumbKey += 1;
+          return (
             <div
+              {...props}
+              key={thumbKey}
               style={{
-                position: "absolute",
-                top: "-24px",
-                color: "#fff",
-                fontWeight: "bold",
-                fontSize: "12px",
-                fontFamily: "Arial,Helvetica Neue,Helvetica,sans-serif",
-                padding: "2px",
-                borderRadius: "4px",
-                backgroundColor: "#548BF4",
+                ...props.style,
+                height: "6px",
+                width: "100%",
+                backgroundColor: "#ccc",
               }}
             >
-              {confidece.toFixed(1)}
+              {children}
             </div>
+          );
+        }}
+        renderThumb={({ props, isDragged }) => {
+          thumbKey += 1;
+          return (
             <div
+              {...props}
+              key={thumbKey}
               style={{
-                height: "16px",
-                width: "5px",
-                backgroundColor: isDragged ? "#548BF4" : "#CCC",
+                ...props.style,
+                height: "32px",
+                width: "32px",
+                borderRadius: "4px",
+                backgroundColor: "#FFF",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
-            />
-          </div>
-        )}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: "-24px",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  fontFamily: "Arial,Helvetica Neue,Helvetica,sans-serif",
+                  padding: "2px",
+                  borderRadius: "4px",
+                  backgroundColor: "#548BF4",
+                }}
+              >
+                {confidece.toFixed(1)}
+              </div>
+              <div
+                style={{
+                  height: "16px",
+                  width: "5px",
+                  backgroundColor: isDragged ? "#548BF4" : "#CCC",
+                }}
+              />
+            </div>
+          );
+        }}
       />
     </div>
   );

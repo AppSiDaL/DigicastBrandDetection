@@ -73,7 +73,6 @@ def api(request):
 
 @csrf_exempt
 def insert(request):
-    # Parse the JSON body of the request
     try:
         data = json.loads(request.body)
         model_path = data.get('modelo')

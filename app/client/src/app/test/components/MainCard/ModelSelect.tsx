@@ -21,7 +21,6 @@ export default function ModelSelect({model,setModel,modelsURL}: ModelSelectProps
       defaultValue={model}
       onChange={(e) => setModel(e.target.value)}
    >
-      <option selected>Choose a Model</option>
       {modelsURL.map((model) => (
           <option key={model.value} value={model.value}>
             {model.label}

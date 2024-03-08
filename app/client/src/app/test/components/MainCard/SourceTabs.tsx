@@ -4,9 +4,16 @@ import React from "react";
 interface SourceTabsProps {
   source: string;
   setSource: React.Dispatch<React.SetStateAction<string>>;
+  response: any;
+  setResponse: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export default function SourceTabs({ source, setSource }: SourceTabsProps) {
+export default function SourceTabs({
+  source,
+  setSource,
+  response,
+  setResponse,
+}: SourceTabsProps) {
   return (
     <div className="border-b border-gray-200 dark:border-gray-700">
       <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
@@ -18,7 +25,10 @@ export default function SourceTabs({ source, setSource }: SourceTabsProps) {
                 ? "text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500 group"
                 : "hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group"
             } inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg`}
-            onClick={() => setSource("youtube")}
+            onClick={() => {
+              setSource("youtube");
+              setResponse(null);
+            }}
           >
             <IconBrandYoutube className="w-4 h-4 me-2" />
             Youtube Video
@@ -32,7 +42,10 @@ export default function SourceTabs({ source, setSource }: SourceTabsProps) {
                 ? "text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500 group"
                 : "hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group"
             } inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg`}
-            onClick={() => setSource("image")}
+            onClick={() => {
+              setSource("image");
+              setResponse(null);
+            }}
             aria-current="page"
           >
             <IconPhoto className="w-4 h-4 me-2" />

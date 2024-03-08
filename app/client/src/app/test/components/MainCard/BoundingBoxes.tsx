@@ -1,5 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Group, Image, Layer, Rect, Stage, Text } from "react-konva";
+import {
+  Group,
+  Image,
+  Label,
+  Layer,
+  Rect,
+  Stage,
+  Tag,
+  Text,
+} from "react-konva";
 import useImage from "use-image";
 
 interface BoundingBoxesProps {
@@ -20,15 +29,21 @@ export default function BoundingBoxes({
   useEffect(() => {
     if (stageRef.current) {
       const container = (stageRef.current as any).parentNode;
-      setStageSize({ width: container.offsetWidth, height: container.offsetHeight });
+      setStageSize({
+        width: container.offsetWidth,
+        height: container.offsetHeight,
+      });
     }
   }, []);
 
   useEffect(() => {
     if (image) {
-      const newScale = Math.min(stageSize.width / image.width, stageSize.height / image.height);
-      const x = stageSize.width / 2 - image.width / 2 * newScale;
-      const y = stageSize.height / 2 - image.height / 2 * newScale;
+      const newScale = Math.min(
+        stageSize.width / image.width,
+        stageSize.height / image.height
+      );
+      const x = stageSize.width / 2 - (image.width / 2) * newScale;
+      const y = stageSize.height / 2 - (image.height / 2) * newScale;
       setScale(newScale);
       setOffset({ x, y });
     }
@@ -39,48 +54,56 @@ export default function BoundingBoxes({
   };
 
   const URLImage = ({ url, scale, offset }: any) => {
-    return image ? <Image x={offset.x} y={offset.y} scaleX={scale} scaleY={scale} image={image} alt="" /> : null;
+    return image ? (
+      <Image
+        x={offset.x}
+        y={offset.y}
+        scaleX={scale}
+        scaleY={scale}
+        image={image}
+        alt=""
+      />
+    ) : null;
   };
-
 
   return (
     <div ref={stageRef}>
-      <Stage
-        width={stageSize.width}
-        height={stageSize.height}
-      >
-      <Layer>
-        <URLImage
-          url={imageURL}
-          scale={scale}
-          offset={offset}
-        />
-        {response.predictions.map((prediction: any, i: any) => {
-          const x1 = (prediction.x - prediction.width / 2) * scale + offset.x;
-          const y1 = (prediction.y - prediction.height / 2) * scale + offset.y;
-          const width = prediction.width * scale;
-          const height = prediction.height * scale;
-          return (
-            <Group key={i}>
-              <Rect
-                x={x1}
-                y={y1}
-                width={width}
-                height={height}
-                stroke={randomColor()}
-                strokeWidth={5}
-              />
-              <Text
-                fill={randomColor()}
-                text={`${prediction.class}-${prediction.confidence.toFixed(2)}`}
-                fontSize={15}
-                x={x1 + 5}
-                y={y1 + 5}
-              />
-            </Group>
-          );
-        })}
-      </Layer>
+      <Stage width={stageSize.width} height={stageSize.height}>
+        <Layer>
+          <URLImage url={imageURL} scale={scale} offset={offset} />
+          {response &&
+            response.predictions.map((prediction: any, i: any) => {
+              const x1 =
+                (prediction.x - prediction.width / 2) * scale + offset.x;
+              const y1 =
+                (prediction.y - prediction.height / 2) * scale + offset.y;
+              const width = prediction.width * scale;
+              const height = prediction.height * scale;
+              return (
+                <Group key={i}>
+                  <Rect
+                    x={x1}
+                    y={y1}
+                    width={width}
+                    height={height}
+                    stroke={randomColor()}
+                    strokeWidth={5}
+                  />
+                  <Label x={x1 + 5} y={y1 + 5}>
+                    <Tag fill="red" />
+                    <Text
+                      text={`${
+                        prediction.class
+                      }-${prediction.confidence.toFixed(2)}`}
+                      fontSize={10}
+                      fill="white"
+                      padding={5}
+                    />
+                  </Label>
+                </Group>
+              );
+            })}
+        </Layer>
       </Stage>
     </div>
   );

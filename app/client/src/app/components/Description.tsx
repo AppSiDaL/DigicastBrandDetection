@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 
 export default function Description() {
@@ -5,16 +6,20 @@ export default function Description() {
     <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <a href="#">
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        Detecccion de Marcas y Rostros.
+          Detecccion de Marcas y Rostros.
         </h5>
       </a>
       <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-      LogoSpy es una herramienta que te permite detectar marcas y rostros en
+        LogoSpy es una herramienta que te permite detectar marcas y rostros en
         imagenes, solo tienes que subir tu imagen y esperar unos segundos para
         que la magia ocurra.
       </p>
       <a
         href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          window.location.href = "/test";
+        }}
         className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
       >
         Lee Mas

@@ -1,0 +1,26 @@
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #f5f7fa;
+  align-items: center;
+  border: 2px dashed #798895;
+  cursor: pointer;
+  border-radius: 5px;
+  height: 100px;
+}
+
+.uploaded-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-radius: 5px;
+  background-color: #e9f0ff;
+}
+
+form> img, form video {
+  height: 100px;
+  max-height: 80%; /* Cambia esto a un porcentaje del contenedor del formulario */
+  object-fit: contain;
+}

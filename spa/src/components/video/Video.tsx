@@ -107,7 +107,6 @@ export default function Video({
             }}
           />
           <YTPlayer />
-
           <canvas
             width={model.inputShape[1]}
             height={model.inputShape[2]}

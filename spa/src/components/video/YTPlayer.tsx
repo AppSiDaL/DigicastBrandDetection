@@ -1,9 +1,12 @@
 import { useRef, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 
-function YTPlayer() {
+interface YTPlayerProps {
+  ytRef: React.RefObject<ReactPlayer>;
+}
+
+function YTPlayer({ ytRef }: YTPlayerProps) {
   const playerRef = useRef(null);
-  const videoRef = useRef(null);
   const [recorder, setRecorder] = useState(null);
 
   useEffect(() => {
@@ -26,10 +29,10 @@ function YTPlayer() {
       recorder.addEventListener("dataavailable", (evt) => {
         const url = URL.createObjectURL(evt.data);
         console.log(url);
-        if (videoRef.current) {
-          videoRef.current.src = url;
+        if (ytRef.current) {
+          ytRef.current.src = url;
           // Liberar el objeto URL cuando el video se haya cargado
-          videoRef.current.onloadeddata = () => {
+          ytRef.current.onloadeddata = () => {
             URL.revokeObjectURL(url);
           };
         }
@@ -54,7 +57,7 @@ function YTPlayer() {
         onPause={handleStop}
         onStop={handleStop}
       />
-      <video ref={videoRef} controls />
+      <br />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 .App {
   height: 100%;
   padding: 0 10px;
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -35,7 +34,7 @@
   border-radius: 10px;
 }
 
-.content > video {
+.video {
   display: none;
   width: 100%;
   max-width: 620px;
@@ -44,7 +43,6 @@
 }
 
 .content {
-  position: relative;
 }
 
 .content > canvas {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import * as tf from "@tensorflow/tfjs";
 import "@tensorflow/tfjs-backend-webgl"; // set backend to webgl
 import Loader from "./Loader";
@@ -34,7 +34,7 @@ export default function Video({
   }); // init model & input shape
 
   // references
-
+  const YTVideoRef = useRef(null);
   // model configs
   const modelName = "yolov8n";
 
@@ -87,6 +87,7 @@ export default function Video({
           />
           <video
             autoPlay
+            className="video"
             muted
             ref={cameraRef}
             onPlay={() => {
@@ -97,6 +98,7 @@ export default function Video({
           />
           <video
             autoPlay
+            className="video"
             muted
             ref={videoRef}
             onPlay={() => {
@@ -106,7 +108,9 @@ export default function Video({
               }
             }}
           />
-          <YTPlayer />
+          <YTPlayer ytRef={YTVideoRef} />
+          <video ref={YTVideoRef} controls />
+
           <canvas
             width={model.inputShape[1]}
             height={model.inputShape[2]}

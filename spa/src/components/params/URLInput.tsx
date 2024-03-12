@@ -23,6 +23,7 @@ export default function URLInput({
   streaming,
   setStreaming,
 }: UploaderProps) {
+  const [streamingURL, setStreamingURL] = useState<string>(""); // streaming state
   return (
     <Card style={{ ...cardStyle, display: "flex", justifyContent: "center" }}>
       <CardContent>
@@ -38,12 +39,7 @@ export default function URLInput({
                 size={40}
                 color="gray"
                 onClick={() => {
-                  console.log(ytRef.current);
-                  if (ytRef.current) {
-                    ytRef.current.src = url; // set image source
-                    ytRef.current.style.display = "block"; // show image
-                    setStreaming("yt" as "yt" | null); // set streaming to image
-                  }
+                  setUrl(streamingURL);
                 }}
               />
             )}
@@ -51,7 +47,7 @@ export default function URLInput({
               type="text"
               placeholder="Paste URL"
               onChange={(e) => {
-                setUrl(e.target.value);
+                setStreamingURL(e.target.value);
               }}
             />
           </div>

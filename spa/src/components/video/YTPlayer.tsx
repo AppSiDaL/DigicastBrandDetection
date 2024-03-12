@@ -3,9 +3,10 @@ import ReactPlayer from "react-player";
 
 interface YTPlayerProps {
   ytRef: React.RefObject<ReactPlayer>;
+  url: string;
 }
 
-function YTPlayer({ ytRef }: YTPlayerProps) {
+function YTPlayer({ ytRef, url }: YTPlayerProps) {
   const playerRef = useRef(null);
   const [recorder, setRecorder] = useState(null);
 
@@ -51,13 +52,12 @@ function YTPlayer({ ytRef }: YTPlayerProps) {
   return (
     <div>
       <ReactPlayer
-        url="https://www.youtube.com/watch?v=5LhIt9der6g"
+        url={url}
         ref={playerRef}
         onPlay={handlePlay}
         onPause={handleStop}
         onStop={handleStop}
       />
-      <br />
     </div>
   );
 }

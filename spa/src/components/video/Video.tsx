@@ -5,7 +5,6 @@ import Loader from "./Loader";
 import { detect, detectVideo } from "../../utils/detect";
 import "./app.css";
 import { PiMountainsDuotone } from "react-icons/pi";
-import ReactPlayer from "react-player";
 import YTPlayer from "./YTPlayer";
 
 interface VideoProps {
@@ -108,7 +107,7 @@ export default function Video({
               }
             }}
           />
-          <YTPlayer ytRef={YTVideoRef} />
+          <YTPlayer ytRef={YTVideoRef} url={url}/>
           <video ref={YTVideoRef} controls />
 
           <canvas

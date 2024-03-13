@@ -2,61 +2,29 @@ import { useRef, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 
 interface YTPlayerProps {
-  ytRef: React.RefObject<ReactPlayer>;
-  url: string;
+  ytRef: React.RefObject<HTMLVideoElement>;
+  recorder: any;
+  setRecorder: React.Dispatch<React.SetStateAction<any>>;
 }
 
-function YTPlayer({ ytRef, url }: YTPlayerProps) {
+function YTPlayer({ ytRef, recorder, setRecorder }: YTPlayerProps) {
   const playerRef = useRef(null);
-  const [recorder, setRecorder] = useState(null);
-
+  const [url, setUrl] = useState<string>("");
   useEffect(() => {
-    async function startCapture() {
-      const stream = await navigator.mediaDevices.getDisplayMedia({
-        video: { cursor: "never" },
-        audio: false,
-      });
-      const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: "video/webm",
-      });
-      setRecorder(mediaRecorder);
-    }
-    startCapture();
+    const fullUrl = new URL(window.location.href);
+    const videoUrl = fullUrl.searchParams.get("url");
+    setUrl(videoUrl || "");
   }, []);
+  console.log(ytRef);
 
-  const handlePlay = () => {
-    if (recorder) {
-      recorder.start();
-      recorder.addEventListener("dataavailable", (evt) => {
-        const url = URL.createObjectURL(evt.data);
-        console.log(url);
-        if (ytRef.current) {
-          ytRef.current.src = url;
-          // Liberar el objeto URL cuando el video se haya cargado
-          ytRef.current.onloadeddata = () => {
-            URL.revokeObjectURL(url);
-          };
-        }
-      });
-    }
-  };
 
-  const handleStop = () => {
-    if (recorder) {
-      recorder.stop();
-      // Liberar los recursos del stream de video
-      recorder.stream.getTracks().forEach((track) => track.stop());
-    }
-  };
 
   return (
     <div>
       <ReactPlayer
         url={url}
+      playing={true}
         ref={playerRef}
-        onPlay={handlePlay}
-        onPause={handleStop}
-        onStop={handleStop}
       />
     </div>
   );

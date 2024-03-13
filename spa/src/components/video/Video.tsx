@@ -33,7 +33,6 @@ export default function Video({
   }); // init model & input shape
 
   // references
-  const YTVideoRef = useRef(null);
   // model configs
   const modelName = "yolov8n";
 
@@ -107,9 +106,7 @@ export default function Video({
               }
             }}
           />
-          <YTPlayer ytRef={YTVideoRef} url={url}/>
-          <video ref={YTVideoRef} controls />
-
+          <video className="video" ref={ytRef} controls />
           <canvas
             width={model.inputShape[1]}
             height={model.inputShape[2]}

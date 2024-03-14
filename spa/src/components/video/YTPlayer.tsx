@@ -7,7 +7,7 @@ interface YTPlayerProps {
   setRecorder: React.Dispatch<React.SetStateAction<any>>;
 }
 
-function YTPlayer({ ytRef, recorder, setRecorder }: YTPlayerProps) {
+function YTPlayer({ ytRef }: YTPlayerProps) {
   const playerRef = useRef(null);
   const [url, setUrl] = useState<string>("");
   useEffect(() => {

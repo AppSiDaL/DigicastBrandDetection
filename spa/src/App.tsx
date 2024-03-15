@@ -2,8 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import ViewVideo from "./pages/ViewVideo";
 import Inference from "./pages/Inference";
 import { useRef, useState } from "react";
-
-
+//ejemplo pull request
 export default function App() {
   const [url, setUrl] = useState<string>("");
   const [recorder, setRecorder] = useState(null);

@@ -13,12 +13,6 @@ jobs:
     runs-on: ubuntu-20.04
     if: ${{ github.event_name == 'push' && !contains(toJson(github.event.commits.*.message), '#skip') }}
     steps:
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.64.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP : patch
-
       - name: New Feature
         uses: rjstone/discord-webhook-notify@v1.0.4
         with:

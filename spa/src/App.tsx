@@ -3,7 +3,6 @@ import ViewVideo from "./pages/ViewVideo";
 import Inference from "./pages/Inference";
 import { useRef, useState } from "react";
 
-
 export default function App() {
   const [url, setUrl] = useState<string>("");
   const [recorder, setRecorder] = useState(null);

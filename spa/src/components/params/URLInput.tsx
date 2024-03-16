@@ -20,7 +20,6 @@ export default function URLInput({
   url,
   setUrl,
   ytRef,
-  recorder,
   setRecorder,
   streaming,
   setStreaming,
@@ -68,13 +67,6 @@ export default function URLInput({
     handlePlay();
   };
 
-  const handleStop = () => {
-    if (recorder) {
-      recorder.stop();
-      // Liberar los recursos del stream de video
-      recorder.stream.getTracks().forEach((track:any) => track.stop());
-    }
-  };
 
   return (
     <Card style={{ ...cardStyle, display: "flex", justifyContent: "center" }}>
@@ -98,7 +90,6 @@ export default function URLInput({
             />
           </div>
         </div>
-        <button onClick={handleStop}>Detener</button>
       </CardContent>
     </Card>
   );

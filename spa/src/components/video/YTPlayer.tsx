@@ -15,9 +15,6 @@ function YTPlayer({ ytRef }: YTPlayerProps) {
     const videoUrl = fullUrl.searchParams.get("url");
     setUrl(videoUrl || "");
   }, []);
-  console.log(ytRef);
-
-
 
   return (
     <div>

@@ -60,7 +60,6 @@ export default function Video({
       tf.dispose([warmupResults, dummyInput]); // cleanup memory
     });
   }, []);
-  console.log(streaming);
   return (
     <div className="App">
       {loading.loading && (
@@ -100,7 +99,6 @@ export default function Video({
             muted
             ref={videoRef}
             onPlay={() => {
-              console.log(videoRef);
               if (videoRef.current) {
                 detectVideo(videoRef.current, model, canvasRef.current);
               }

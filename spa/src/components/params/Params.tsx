@@ -33,7 +33,6 @@ export default function Params({
   const divStyle = {
     margin: "10px",
   };
-  console.log(url)
   return (
     <div>
       <div style={{ ...divStyle }}>

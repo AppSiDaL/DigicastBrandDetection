@@ -55,7 +55,6 @@ export default function URLInput({
     mediaRecorder.start();
     mediaRecorder.addEventListener("dataavailable", (evt) => {
       const streamUrl = URL.createObjectURL(evt.data);
-      console.log(streamUrl);
       if (ytRef.current) {
         ytRef.current.src = streamUrl;
         ytRef.current.onloadeddata = () => {
@@ -73,7 +72,6 @@ export default function URLInput({
     }
   };
 
-  console.log(url);
   return (
     <Card style={{ ...cardStyle, display: "flex", justifyContent: "center" }}>
       <CardContent>

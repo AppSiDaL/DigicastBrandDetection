@@ -4,8 +4,6 @@ import { cardStyle, colors } from "@/utils";
 import { Label } from "../ui/label";
 import { CiLink } from "react-icons/ci";
 import { Input } from "../ui/input";
-import { useEffect, useState } from "react";
-import { env } from "process";
 
 interface UploaderProps {
   ytRef: any;
@@ -24,30 +22,17 @@ export default function URLInput({
   ytRef,
   recorder,
   setRecorder,
-  canvasRef,
   streaming,
   setStreaming,
 }: UploaderProps) {
-  const handleClick = () => {
-    const URL =
-      window.location.protocol +
-      "//" +
-      window.location.host +
-      "/video" +
-      "?url=" +
-      url;
-    window.open(URL, "_blank");
-    if (streaming === null || streaming === "image") {
-      ytRef.current.style.display = "block"; // show camera
-      setStreaming("yt"); // set streaming to camera
-    }
-  };
-
   const handlePlay = async () => {
     const stream = await navigator.mediaDevices.getDisplayMedia({
-      video: { cursor: "never" },
+      video: {},
       audio: false,
     });
+    if (ytRef.current) {
+      ytRef.current.srcObject = stream;
+    }
     const mediaRecorder = new MediaRecorder(stream, {
       mimeType: "video/webm",
     });
@@ -62,13 +47,32 @@ export default function URLInput({
         };
       }
     });
+    if (streaming === null || streaming === "image") {
+      ytRef.current.style.display = "block"; // show camera
+      setStreaming("yt"); // set streaming to camera
+    }
+  };
+  const handleClick = () => {
+    const URL =
+      window.location.protocol +
+      "//" +
+      window.location.host +
+      "/video" +
+      "?url=" +
+      url;
+    window.open(URL, "_blank");
+    if (streaming === null || streaming === "image") {
+      ytRef.current.style.display = "block"; // show camera
+      setStreaming("yt"); // set streaming to camera
+    }
+    handlePlay();
   };
 
   const handleStop = () => {
     if (recorder) {
       recorder.stop();
       // Liberar los recursos del stream de video
-      recorder.stream.getTracks().forEach((track) => track.stop());
+      recorder.stream.getTracks().forEach((track:any) => track.stop());
     }
   };
 
@@ -94,7 +98,6 @@ export default function URLInput({
             />
           </div>
         </div>
-        <button onClick={handlePlay}>Iniciar</button>
         <button onClick={handleStop}>Detener</button>
       </CardContent>
     </Card>

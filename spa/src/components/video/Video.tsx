@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import * as tf from "@tensorflow/tfjs";
 import "@tensorflow/tfjs-backend-webgl"; // set backend to webgl
 import Loader from "./Loader";
 import { detect, detectVideo } from "../../utils/detect";
 import "./app.css";
 import { PiMountainsDuotone } from "react-icons/pi";
-import YTPlayer from "./YTPlayer";
 
 interface VideoProps {
   imageRef: React.RefObject<HTMLImageElement>;
@@ -13,7 +12,7 @@ interface VideoProps {
   videoRef: React.RefObject<HTMLVideoElement>;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   url: string;
-  ytRef: React.RefObject<ReactPlayer>;
+  ytRef: React.RefObject<HTMLVideoElement>;
   streaming: string | null;
   setStreaming: React.Dispatch<React.SetStateAction<string | null>>;
 }
@@ -21,7 +20,6 @@ export default function Video({
   imageRef,
   cameraRef,
   videoRef,
-  url,
   ytRef,
   canvasRef,
   streaming,
@@ -104,7 +102,7 @@ export default function Video({
               }
             }}
           />
-          <video className="video" ref={ytRef} controls />
+          <video className="video" autoPlay muted ref={ytRef} controls />
           <canvas
             width={model.inputShape[1]}
             height={model.inputShape[2]}

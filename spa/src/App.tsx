@@ -7,7 +7,6 @@ export default function App() {
   const [url, setUrl] = useState<string>("");
   const [recorder, setRecorder] = useState(null);
   const ytRef = useRef(null);
-  console.log("appp",url)
   
   return (
     <Routes>

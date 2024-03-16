@@ -23,7 +23,6 @@ export default function Inference({ url, setUrl, ytRef,recorder,setRecorder }: U
     borderStyle: "solid",
     borderRadius: 5,
   };
-console.log(url)
   return (
     <div
       style={{

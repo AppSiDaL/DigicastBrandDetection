@@ -17,7 +17,6 @@ export default function WebCam({
   cameraRef,
 }: WebCamProps) {
   const webcam = new Webcam(); // webcam handler
-  console.log(streaming);
   return (
     <div
       style={{

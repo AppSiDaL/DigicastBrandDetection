@@ -6,11 +6,16 @@ interface ResultsProps {
 
 export default function Results({ resultsRef }: ResultsProps) {
   return (
-    <div style={{ width: "50%", height: "100%" }} ref={resultsRef}>
-      <VscJson
-        size={350}
-        color="gray"
-      />
+    <div
+      style={{
+        height: "100%",
+        wordWrap: "break-word",
+        maxHeight: "100%",
+        overflow: "auto",
+      }}
+      ref={resultsRef}
+    >
+      <VscJson style={{ margin: "auto" }} size={350} color="gray" />
     </div>
   );
 }

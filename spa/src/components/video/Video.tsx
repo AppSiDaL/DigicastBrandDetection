@@ -85,7 +85,6 @@ export default function Video({
           <video
             autoPlay
             className="video"
-            muted
             ref={cameraRef}
             onPlay={() => {
               if (cameraRef.current) {
@@ -96,7 +95,6 @@ export default function Video({
           <video
             autoPlay
             className="video"
-            muted
             ref={videoRef}
             onPlay={() => {
               if (videoRef.current) {
@@ -107,7 +105,6 @@ export default function Video({
           <video
             className="video"
             autoPlay
-            muted
             ref={ytRef}
             onPlay={() => {
               if (ytRef.current) {

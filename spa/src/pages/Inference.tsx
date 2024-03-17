@@ -59,7 +59,7 @@ export default function Inference({ url, setUrl, ytRef,recorder,setRecorder }: U
           cameraRef={cameraRef}
         />
       </div>
-      <div style={{ width: "70%", height: "100%", ...border, marginLeft: 5 }}>
+      <div style={{ width: "70%", height: "100%", ...border, marginLeft: 5,overflow:"auto" }}>
         <div>
           <Video
           resultsRef={resultsRef}

@@ -4,6 +4,7 @@ import { cardStyle, colors } from "@/utils";
 import { Label } from "../ui/label";
 import { CiLink } from "react-icons/ci";
 import { Input } from "../ui/input";
+import { IoCloseOutline } from "react-icons/io5";
 
 interface UploaderProps {
   ytRef: any;
@@ -20,6 +21,7 @@ export default function URLInput({
   url,
   setUrl,
   ytRef,
+  recorder,
   setRecorder,
   streaming,
   setStreaming,
@@ -67,7 +69,18 @@ export default function URLInput({
     handlePlay();
   };
 
-
+  const endStream = () => {
+    if (ytRef.current) {
+      ytRef.current.srcObject = null;
+      ytRef.current.src = "";
+      ytRef.current.style.display = "none";
+      recorder.stream.getTracks().forEach((track: any) => track.stop());
+      setUrl("");
+    }
+    if (streaming === "yt") {
+      setStreaming(null);
+    }
+  };
   return (
     <Card style={{ ...cardStyle, display: "flex", justifyContent: "center" }}>
       <CardContent>
@@ -84,8 +97,16 @@ export default function URLInput({
             <Input
               type="text"
               placeholder="Paste URL"
+              value={url}
               onChange={(e) => {
                 setUrl(e.target.value);
+              }}
+            />
+            <IoCloseOutline
+              size={25}
+              color="red"
+              onClick={() => {
+                if (streaming === "yt") endStream();
               }}
             />
           </div>

@@ -17,6 +17,7 @@ export default function Inference({ url, setUrl, ytRef,recorder,setRecorder }: U
   const cameraRef = useRef(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const resultsRef = useRef(null);
   const border = {
     border: "2.5px",
     borderColor: "#5C5C5C",
@@ -58,9 +59,10 @@ export default function Inference({ url, setUrl, ytRef,recorder,setRecorder }: U
           cameraRef={cameraRef}
         />
       </div>
-      <div style={{ width: "70%", height: "100%", ...border, marginLeft: 5 }}>
+      <div style={{ width: "70%", height: "100%", ...border, marginLeft: 5,overflow:"auto" }}>
         <div>
           <Video
+          resultsRef={resultsRef}
             url={url}
             ytRef={ytRef}
             setStreaming={setStreaming}
@@ -75,14 +77,14 @@ export default function Inference({ url, setUrl, ytRef,recorder,setRecorder }: U
           style={{
             display: "flex",
             flexDirection: "row",
-            ...border,
-            margin: 10,
+            width: "100%",
+            height: "50%",
           }}
         >
-          <div style={{ ...border, margin: 10 }}>
-            <Results />
+          <div style={{ ...border, margin: 10,width:"50%",height:"100%" }}>
+            <Results resultsRef={resultsRef}/>
           </div>
-          <div style={{ ...border, margin: 10 }}>
+          <div style={{ ...border, margin: 10,width:"50%",height:"100%" }}>
             <Spech />
           </div>
         </div>

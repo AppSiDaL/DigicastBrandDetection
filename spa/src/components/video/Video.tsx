@@ -102,7 +102,17 @@ export default function Video({
               }
             }}
           />
-          <video className="video" autoPlay muted ref={ytRef} controls />
+          <video
+            className="video"
+            autoPlay
+            muted
+            ref={ytRef}
+            onPlay={() => {
+              if (ytRef.current) {
+                detectVideo(ytRef.current, model, canvasRef.current);
+              }
+            }}
+          />
           <canvas
             width={model.inputShape[1]}
             height={model.inputShape[2]}

@@ -19,8 +19,10 @@ function YTPlayer({ ytRef }: YTPlayerProps) {
   return (
     <div>
       <ReactPlayer
+        width="100vw"
+        height="100vh"
         url={url}
-      playing={true}
+        playing={true}
         ref={playerRef}
       />
     </div>

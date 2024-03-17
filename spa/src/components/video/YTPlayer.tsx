@@ -19,6 +19,7 @@ function YTPlayer({ ytRef }: YTPlayerProps) {
   return (
     <div>
       <ReactPlayer
+        muted
         width="100vw"
         height="100vh"
         url={url}

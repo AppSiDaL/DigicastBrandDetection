@@ -7,6 +7,7 @@ import "./app.css";
 import { PiMountainsDuotone } from "react-icons/pi";
 
 interface VideoProps {
+  resultsRef: React.RefObject<HTMLDivElement>;
   imageRef: React.RefObject<HTMLImageElement>;
   cameraRef: React.RefObject<HTMLVideoElement>;
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -17,6 +18,7 @@ interface VideoProps {
   setStreaming: React.Dispatch<React.SetStateAction<string | null>>;
 }
 export default function Video({
+  resultsRef,
   imageRef,
   cameraRef,
   videoRef,
@@ -76,7 +78,7 @@ export default function Video({
             ref={imageRef}
             onLoad={() => {
               if (imageRef.current) {
-                detect(imageRef.current, model, canvasRef.current);
+                detect(imageRef.current, model, canvasRef.current,resultsRef.current);
               }
             }}
           />
@@ -87,7 +89,7 @@ export default function Video({
             ref={cameraRef}
             onPlay={() => {
               if (cameraRef.current) {
-                detectVideo(cameraRef.current, model, canvasRef.current);
+                detectVideo(cameraRef.current, model, canvasRef.current,resultsRef.current);
               }
             }}
           />
@@ -98,7 +100,7 @@ export default function Video({
             ref={videoRef}
             onPlay={() => {
               if (videoRef.current) {
-                detectVideo(videoRef.current, model, canvasRef.current);
+                detectVideo(videoRef.current, model, canvasRef.current,resultsRef.current);
               }
             }}
           />
@@ -109,7 +111,7 @@ export default function Video({
             ref={ytRef}
             onPlay={() => {
               if (ytRef.current) {
-                detectVideo(ytRef.current, model, canvasRef.current);
+                detectVideo(ytRef.current, model, canvasRef.current,resultsRef.current);
               }
             }}
           />

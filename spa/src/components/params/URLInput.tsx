@@ -75,6 +75,7 @@ export default function URLInput({
       ytRef.current.src = "";
       ytRef.current.style.display = "none";
       recorder.stream.getTracks().forEach((track: any) => track.stop());
+      setUrl("");
     }
     if (streaming === "yt") {
       setStreaming(null);
@@ -96,6 +97,7 @@ export default function URLInput({
             <Input
               type="text"
               placeholder="Paste URL"
+              value={url}
               onChange={(e) => {
                 setUrl(e.target.value);
               }}

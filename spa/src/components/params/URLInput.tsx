@@ -32,11 +32,11 @@ export default function URLInput({
           </Label>
           <div style={{ display: "flex", flexDirection: "row" }}>
             {url === "" ? (
-              <CiLink size={40} color="gray" />
+              <CiLink size={40} color="red" />
             ) : (
               <FaArrowRight
                 size={40}
-                color="gray"
+                color="green"
                 onClick={() => {
                   console.log(ytRef.current);
                   if (ytRef.current) {

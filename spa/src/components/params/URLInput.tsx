@@ -90,9 +90,20 @@ export default function URLInput({
           </Label>
           <div style={{ display: "flex", flexDirection: "row" }}>
             {url === "" ? (
-              <CiLink size={40} color="gray" />
+              <CiLink size={40} color="red" />
             ) : (
-              <FaArrowRight size={40} color="gray" onClick={handleClick} />
+              <FaArrowRight
+                size={40}
+                color="green"
+                onClick={() => {
+                  console.log(ytRef.current);
+                  if (ytRef.current) {
+                    ytRef.current.src = url; // set image source
+                    ytRef.current.style.display = "block"; // show image
+                    setStreaming("yt" as "yt" | null); // set streaming to image
+                  }
+                }}
+              />
             )}
             <Input
               type="text"

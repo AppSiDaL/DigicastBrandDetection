@@ -7,6 +7,7 @@ interface SpeechProps {
   setStreaming: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
+
 export default function Speech({ streaming, url }: SpeechProps) {
   const [finalTranscript, setFinalTranscript] = useState("");
   const [interimTranscript, setInterimTranscript] = useState("");

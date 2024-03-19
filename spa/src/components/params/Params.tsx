@@ -13,11 +13,15 @@ interface ParamsProps {
   setStreaming: React.Dispatch<React.SetStateAction<string | null>>;
   url: string;
   setUrl: React.Dispatch<React.SetStateAction<string>>;
+  recorder:any;
+  setRecorder: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export default function Params({
   imageRef,
   setUrl,
+  recorder,
+  setRecorder,
   url,
   ytRef,
   cameraRef,
@@ -47,6 +51,8 @@ export default function Params({
       <div style={{ ...divStyle }}>
         <URLInput
           url={url}
+          recorder={recorder}
+          setRecorder={setRecorder}
           setUrl={setUrl}
           setStreaming={setStreaming}
           streaming={streaming}

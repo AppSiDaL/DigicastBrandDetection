@@ -5,24 +5,23 @@ import Loader from "./Loader";
 import { detect, detectVideo } from "../../utils/detect";
 import "./app.css";
 import { PiMountainsDuotone } from "react-icons/pi";
-import ReactPlayer from "react-player";
-import YTPlayer from "./YTPlayer";
 
 interface VideoProps {
+  resultsRef: React.RefObject<HTMLDivElement>;
   imageRef: React.RefObject<HTMLImageElement>;
   cameraRef: React.RefObject<HTMLVideoElement>;
   videoRef: React.RefObject<HTMLVideoElement>;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   url: string;
-  ytRef: React.RefObject<ReactPlayer>;
+  ytRef: React.RefObject<HTMLVideoElement>;
   streaming: string | null;
   setStreaming: React.Dispatch<React.SetStateAction<string | null>>;
 }
 export default function Video({
+  resultsRef,
   imageRef,
   cameraRef,
   videoRef,
-  url,
   ytRef,
   canvasRef,
   streaming,
@@ -34,7 +33,6 @@ export default function Video({
   }); // init model & input shape
 
   // references
-
   // model configs
   const modelName = "yolov8n";
 
@@ -62,7 +60,6 @@ export default function Video({
       tf.dispose([warmupResults, dummyInput]); // cleanup memory
     });
   }, []);
-  console.log(streaming);
   return (
     <div className="App">
       {loading.loading && (
@@ -81,33 +78,40 @@ export default function Video({
             ref={imageRef}
             onLoad={() => {
               if (imageRef.current) {
-                detect(imageRef.current, model, canvasRef.current);
+                detect(imageRef.current, model, canvasRef.current,resultsRef.current);
               }
             }}
           />
           <video
             autoPlay
-            muted
+            className="video"
             ref={cameraRef}
             onPlay={() => {
               if (cameraRef.current) {
-                detectVideo(cameraRef.current, model, canvasRef.current);
+                detectVideo(cameraRef.current, model, canvasRef.current,resultsRef.current);
               }
             }}
           />
           <video
             autoPlay
-            muted
+            className="video"
             ref={videoRef}
             onPlay={() => {
-              console.log(videoRef);
               if (videoRef.current) {
-                detectVideo(videoRef.current, model, canvasRef.current);
+                detectVideo(videoRef.current, model, canvasRef.current,resultsRef.current);
               }
             }}
           />
-          <YTPlayer />
-
+          <video
+            className="video"
+            autoPlay
+            ref={ytRef}
+            onPlay={() => {
+              if (ytRef.current) {
+                detectVideo(ytRef.current, model, canvasRef.current,resultsRef.current);
+              }
+            }}
+          />
           <canvas
             width={model.inputShape[1]}
             height={model.inputShape[2]}

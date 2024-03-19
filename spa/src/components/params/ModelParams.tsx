@@ -25,7 +25,7 @@ export default function ModelParams() {
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Select>
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select a fruit" />
+            <SelectValue placeholder="Select a object" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>

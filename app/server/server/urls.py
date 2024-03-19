@@ -21,6 +21,7 @@ from app import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", views.api, name="api"),
+    path("api/spech", views.spech, name="spech"),
     path("api/test", views.test, name="test"),
     path("api/insert", views.insert, name="insert")
 ]

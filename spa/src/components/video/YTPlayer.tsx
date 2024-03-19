@@ -1,60 +1,30 @@
 import { useRef, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 
-function YTPlayer() {
+interface YTPlayerProps {
+  ytRef: React.RefObject<HTMLVideoElement>;
+  recorder: any;
+  setRecorder: React.Dispatch<React.SetStateAction<any>>;
+}
+
+function YTPlayer({ ytRef }: YTPlayerProps) {
   const playerRef = useRef(null);
-  const videoRef = useRef(null);
-  const [recorder, setRecorder] = useState(null);
-
+  const [url, setUrl] = useState<string>("");
   useEffect(() => {
-    async function startCapture() {
-      const stream = await navigator.mediaDevices.getDisplayMedia({
-        video: { cursor: "never" },
-        audio: false,
-      });
-      const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: "video/webm",
-      });
-      setRecorder(mediaRecorder);
-    }
-    startCapture();
+    const fullUrl = new URL(window.location.href);
+    const videoUrl = fullUrl.searchParams.get("url");
+    setUrl(videoUrl || "");
   }, []);
-
-  const handlePlay = () => {
-    if (recorder) {
-      recorder.start();
-      recorder.addEventListener("dataavailable", (evt) => {
-        const url = URL.createObjectURL(evt.data);
-        console.log(url);
-        if (videoRef.current) {
-          videoRef.current.src = url;
-          // Liberar el objeto URL cuando el video se haya cargado
-          videoRef.current.onloadeddata = () => {
-            URL.revokeObjectURL(url);
-          };
-        }
-      });
-    }
-  };
-
-  const handleStop = () => {
-    if (recorder) {
-      recorder.stop();
-      // Liberar los recursos del stream de video
-      recorder.stream.getTracks().forEach((track) => track.stop());
-    }
-  };
 
   return (
     <div>
       <ReactPlayer
-        url="https://www.youtube.com/watch?v=5LhIt9der6g"
+        width="100vw"
+        height="100vh"
+        url={url}
+        playing={true}
         ref={playerRef}
-        onPlay={handlePlay}
-        onPause={handleStop}
-        onStop={handleStop}
       />
-      <video ref={videoRef} controls />
     </div>
   );
 }

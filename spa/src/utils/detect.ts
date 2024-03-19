@@ -110,7 +110,6 @@ export const detect = async (
     classes: classes_data
   };
   resultsRef.innerHTML = JSON.stringify(data, null, 2);
-  console.log(data);
   return {
     data,
   };

@@ -11,7 +11,13 @@ interface UploaderProps {
   recorder: any;
   setRecorder: React.Dispatch<React.SetStateAction<any>>;
 }
-export default function Inference({ url, setUrl, ytRef,recorder,setRecorder }: UploaderProps) {
+export default function Inference({
+  url,
+  setUrl,
+  ytRef,
+  recorder,
+  setRecorder,
+}: UploaderProps) {
   const [streaming, setStreaming] = useState<string | null>(null); // streaming state
   const imageRef = useRef(null);
   const cameraRef = useRef(null);
@@ -59,10 +65,18 @@ export default function Inference({ url, setUrl, ytRef,recorder,setRecorder }: U
           cameraRef={cameraRef}
         />
       </div>
-      <div style={{ width: "70%", height: "100%", ...border, marginLeft: 5,overflow:"auto" }}>
+      <div
+        style={{
+          width: "70%",
+          height: "100%",
+          ...border,
+          marginLeft: 5,
+          overflow: "auto",
+        }}
+      >
         <div>
           <Video
-          resultsRef={resultsRef}
+            resultsRef={resultsRef}
             url={url}
             ytRef={ytRef}
             setStreaming={setStreaming}
@@ -81,11 +95,11 @@ export default function Inference({ url, setUrl, ytRef,recorder,setRecorder }: U
             height: "50%",
           }}
         >
-          <div style={{ ...border, margin: 10,width:"50%",height:"100%" }}>
-            <Results resultsRef={resultsRef}/>
+          <div style={{ ...border, margin: 10, width: "50%", height: "100%" }}>
+            <Results resultsRef={resultsRef} />
           </div>
-          <div style={{ ...border, margin: 10,width:"50%",height:"100%" }}>
-            <Spech />
+          <div style={{ ...border, margin: 10, width: "50%", height: "100%" }}>
+            <Spech url={url} streaming={streaming} setStreaming={setStreaming} />
           </div>
         </div>
       </div>

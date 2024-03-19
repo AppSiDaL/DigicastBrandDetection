@@ -1,39 +1,70 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import SpechService from "../services/spech";
 
-export default function Speech() {
-  const [transcript, setTranscript] = useState('');
+interface SpeechProps {
+  streaming: string | null;
+  url: string;
+  setStreaming: React.Dispatch<React.SetStateAction<string | null>>;
+}
 
+export default function Speech({ streaming, url }: SpeechProps) {
+  const [finalTranscript, setFinalTranscript] = useState("");
+  const [interimTranscript, setInterimTranscript] = useState("");
   useEffect(() => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
+    let recognition: SpeechRecognition | undefined;
 
-    recognition.continuous = true;
-    recognition.interimResults = true;
+    if (streaming === "camera") {
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
 
-    recognition.onstart = () => {
-      console.log('Voice is activated, you can speak to microphone.');
-    };
+      recognition.continuous = true;
+      recognition.interimResults = true;
 
-    recognition.onresult = (event) => {
-      let interimTranscript = '';
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const transcript = event.results[i][0].transcript;
-        if (event.results[i].isFinal) {
-          setTranscript(prevTranscript => prevTranscript + ' ' + transcript);
-        } else {
-          interimTranscript += transcript;
+      recognition.onstart = () => {
+        console.log("Voice is activated, you can speak to microphone.");
+      };
+
+      recognition.onresult = (event) => {
+        let interim = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            setFinalTranscript((prevTranscript) => prevTranscript + " " + transcript);
+          } else {
+            interim += transcript;
+          }
         }
+        setInterimTranscript(interim);
+      };
+
+      recognition.start();
+    }
+
+    const fetchSpeech = async () => {
+      if (streaming === "yt") {
+        const spech = await SpechService.getSpech(url);
+        console.log(spech)
       }
-      setTranscript(interimTranscript);
     };
 
-    recognition.start();
-  }, []);
+    fetchSpeech();
+
+    return () => {
+      if (recognition) {
+        recognition.stop();
+      }
+    };
+  }, [streaming, url]);
 
   return (
     <div>
-      <p>Transcript:</p>
-      <p>{transcript}</p>
+      {streaming === "camera" && (
+        <>
+          <p>Transcript:</p>
+          <p>{finalTranscript + " " + interimTranscript}</p>
+        </>
+      )}
     </div>
   );
 }

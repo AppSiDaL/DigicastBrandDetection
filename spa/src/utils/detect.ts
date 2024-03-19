@@ -49,6 +49,7 @@ export const detect = async (
   source: HTMLImageElement | HTMLVideoElement,
   model: any,
   canvasRef: any,
+  resultsRef: any,
   callback = () => {}
 ) => {
   const [modelWidth, modelHeight] = model.inputShape.slice(1, 3); // get model width and height
@@ -103,6 +104,15 @@ export const detect = async (
   callback();
 
   tf.engine().endScope(); // end of scoping
+  const data = {
+    boxes: boxes_data,
+    scores: scores_data,
+    classes: classes_data
+  };
+  resultsRef.innerHTML = JSON.stringify(data, null, 2);
+  return {
+    data,
+  };
 };
 
 /**
@@ -112,9 +122,10 @@ export const detect = async (
  * @param {HTMLCanvasElement} canvasRef canvas reference
  */
 export const detectVideo = (
-  vidSource: HTMLVideoElement|any,
+  vidSource: HTMLVideoElement | any,
   model: any,
-  canvasRef: any
+  canvasRef: any,
+  resultsRef: any
 ) => {
   /**
    * Function to detect every frame from video
@@ -126,7 +137,7 @@ export const detectVideo = (
       return; // handle if source is closed
     }
 
-    detect(vidSource, model, canvasRef, () => {
+    detect(vidSource, model, canvasRef,resultsRef, () => {
       requestAnimationFrame(detectFrame); // get another frame
     });
   };

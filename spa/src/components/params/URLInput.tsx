@@ -98,9 +98,7 @@ export default function URLInput({
                 onClick={() => {
                   console.log(ytRef.current);
                   if (ytRef.current) {
-                    ytRef.current.src = url; // set image source
-                    ytRef.current.style.display = "block"; // show image
-                    setStreaming("yt" as "yt" | null); // set streaming to image
+                 handleClick()
                   }
                 }}
               />

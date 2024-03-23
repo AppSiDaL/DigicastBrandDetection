@@ -270,10 +270,7 @@ def insert(request):
     return JsonResponse({"message": "Data inserted successfully"})
 
 
-
-
-
-
+@csrf_exempt
 def extract_audio(url, type):
     if type == "video":
         video = VideoFileClip(url)
@@ -327,21 +324,26 @@ def extract_audio(url, type):
         return AUDIO_FILE, title
 
 
-
+@csrf_exempt
 def spech(request):
-    url=request.body.url
+    data = json.loads(request.body)
+    print(data)
+    url=data.get("url")
     import speech_recognition as sr
 
     print("initiating speech recognition")
     r = sr.Recognizer()
-    AUDIO_FILE, title = extract_audio(url, "youtube")
+    try:
+        AUDIO_FILE, title = extract_audio(url, "youtube")
+    except requests.exceptions.Timeout:
+        print("Timeout occurred while extracting audio")
+        return JsonResponse({"error": "Timeout occurred while extracting audio"})
     with sr.AudioFile(AUDIO_FILE) as source:
         audio = r.record(source)
     try:
         spech = r.recognize_google(audio, language="es-MX")
         spech = spech.lower()
-
-        return spech
+        return JsonResponse({"spech": spech})
     except sr.UnknownValueError:
         print("Sphinx could not understand audio")
     except sr.RequestError as e:

@@ -4,7 +4,7 @@ const getSpech = (videoURL: string) => {
     url: videoURL,
   };
   
-  fetch(url, {
+  return fetch(url, {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {

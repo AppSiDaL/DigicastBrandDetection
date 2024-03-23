@@ -4,6 +4,8 @@ import URLInput from "./URLInput";
 import WebCam from "./WebCam";
 
 interface ParamsProps {
+  spechResponse: any;
+  setSpechResponse: any;
   imageRef: React.RefObject<HTMLImageElement>;
   cameraRef: React.RefObject<HTMLVideoElement>;
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -13,11 +15,13 @@ interface ParamsProps {
   setStreaming: React.Dispatch<React.SetStateAction<string | null>>;
   url: string;
   setUrl: React.Dispatch<React.SetStateAction<string>>;
-  recorder:any;
+  recorder: any;
   setRecorder: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export default function Params({
+  spechResponse,
+  setSpechResponse,
   imageRef,
   setUrl,
   recorder,
@@ -34,7 +38,7 @@ export default function Params({
     margin: "10px",
   };
   return (
-    <div>
+    <div style={{ maxHeight: "100%", overflow: "auto" }}>
       <div style={{ ...divStyle }}>
         <ModelParams />
       </div>
@@ -50,6 +54,8 @@ export default function Params({
       </div>
       <div style={{ ...divStyle }}>
         <URLInput
+          spechResponse={spechResponse}
+          setSpechResponse={setSpechResponse}
           url={url}
           recorder={recorder}
           setRecorder={setRecorder}

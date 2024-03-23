@@ -13,7 +13,17 @@ import { Slider } from "../ui/slider";
 import { cardStyle, colors } from "@/utils";
 import { Label } from "../ui/label";
 
-export default function ModelParams() {
+interface ModelParamsProps {
+  confidence: number;
+  setConfidence: React.Dispatch<React.SetStateAction<number>>;
+  confidenceRef: any;
+}
+
+export default function ModelParams({
+  confidence,
+  confidenceRef,
+  setConfidence,
+}: ModelParamsProps) {
   const data = [
     { value: "bimbo", label: "Bimbo" },
     { value: "coca-cola", label: "Coca-cola" },
@@ -44,15 +54,18 @@ export default function ModelParams() {
 
   type SliderProps = React.ComponentProps<typeof Slider>;
 
-
   const SliderDemo = ({ className, ...props }: SliderProps) => {
     return (
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Slider
-          defaultValue={[50]}
           max={100}
           step={1}
-          className={cn("w-[60%]", className)}
+          defaultValue={[confidence]}
+          onValueCommit={(value) => {
+            confidenceRef.current = value[0];
+            setConfidence(value[0]);
+          }}
+          className={cn("w-[80%]", className)}
           {...props}
         />
       </div>
@@ -72,6 +85,14 @@ export default function ModelParams() {
             Rango de Confianza
           </Label>
           <SliderDemo />
+          <p style={{ display: "flex", justifyContent: "center" }}>
+            {confidence}
+          </p>
+
+          <div style={{ justifyContent: "space-between", display: "flex" }}>
+            <p>0</p>
+            <p>100</p>
+          </div>
         </div>
       </CardContent>
     </Card>

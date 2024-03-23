@@ -17,9 +17,14 @@ interface ParamsProps {
   setUrl: React.Dispatch<React.SetStateAction<string>>;
   recorder: any;
   setRecorder: React.Dispatch<React.SetStateAction<any>>;
+  confidence: number;
+  setConfidence: React.Dispatch<React.SetStateAction<number>>;
+  confidenceRef: any;
 }
 
 export default function Params({
+  confidence,
+  setConfidence,
   spechResponse,
   setSpechResponse,
   imageRef,
@@ -33,6 +38,7 @@ export default function Params({
   canvasRef,
   streaming,
   setStreaming,
+  confidenceRef,
 }: ParamsProps) {
   const divStyle = {
     margin: "10px",
@@ -40,7 +46,7 @@ export default function Params({
   return (
     <div style={{ maxHeight: "100%", overflow: "auto" }}>
       <div style={{ ...divStyle }}>
-        <ModelParams />
+        <ModelParams confidenceRef={confidenceRef} confidence={confidence} setConfidence={setConfidence} />
       </div>
       <div style={{ ...divStyle }}>
         <Uploader

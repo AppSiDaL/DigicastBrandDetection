@@ -12,8 +12,11 @@ import {
 import { Slider } from "../ui/slider";
 import { cardStyle, colors } from "@/utils";
 import { Label } from "../ui/label";
+import labels from "../../utils/labels.json";
 
 interface ModelParamsProps {
+ object: string;
+ setObject: React.Dispatch<React.SetStateAction<string>>;
   confidence: number;
   setConfidence: React.Dispatch<React.SetStateAction<number>>;
   confidenceRef: any;
@@ -23,26 +26,26 @@ export default function ModelParams({
   confidence,
   confidenceRef,
   setConfidence,
+  object,
+  setObject
 }: ModelParamsProps) {
-  const data = [
-    { value: "bimbo", label: "Bimbo" },
-    { value: "coca-cola", label: "Coca-cola" },
-    { value: "pepsi", label: "Pepsi" },
-    { value: "sabritas", label: "Sabritas" },
-  ];
   const SelectDemo = () => {
     return (
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <Select>
+        <Select onValueChange={(e)=>{setObject(e)}} defaultValue={object}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select a object" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Select a Object</SelectLabel>
-              {data.map((item) => (
-                <SelectItem key={item.value} value={item.value}>
-                  {item.label}
+              {labels.map((item) => (
+                <SelectItem
+                  key={item}
+                  value={item}
+                  style={{ textTransform: "capitalize" }}
+                >
+                  {item}
                 </SelectItem>
               ))}
             </SelectGroup>

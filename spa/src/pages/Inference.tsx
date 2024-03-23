@@ -21,6 +21,7 @@ export default function Inference({
   const [streaming, setStreaming] = useState<string | null>(null); // streaming state
   const [spechResponse, setSpechResponse] = useState<any>(null); // spech response state
   const [confidence, setConfidence] = useState(50);
+  const [object, setObject] = useState("null"); // object state
   const confidenceRef = useRef(confidence);
   const imageRef = useRef(null);
   const cameraRef = useRef(null);
@@ -55,7 +56,9 @@ export default function Inference({
         }}
       >
         <Params
-        confidenceRef={confidenceRef}
+          object={object}
+          setObject={setObject}
+          confidenceRef={confidenceRef}
           confidence={confidence}
           setConfidence={setConfidence}
           spechResponse={spechResponse}
@@ -84,7 +87,9 @@ export default function Inference({
       >
         <div>
           <Video
-          confidenceRef={confidenceRef}
+          object={object}
+          setObject={setObject}
+            confidenceRef={confidenceRef}
             confidence={confidence}
             setConfidence={setConfidence}
             resultsRef={resultsRef}

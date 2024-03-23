@@ -50,13 +50,13 @@ export const detect = async (
   model: any,
   canvasRef: any,
   resultsRef: any,
+  confidence: number,
   callback = () => {}
 ) => {
   const [modelWidth, modelHeight] = model.inputShape.slice(1, 3); // get model width and height
 
   tf.engine().startScope(); // start scoping tf engine
   const [input, xRatio, yRatio] = preprocess(source, modelWidth, modelHeight); // preprocess image
-
   const res = model.net.execute(input); // inference model
   const transRes = res.transpose([0, 2, 1]); // transpose result [b, det, n] => [b, n, det]
   const boxes = tf.tidy(() => {
@@ -94,8 +94,9 @@ export const detect = async (
   const boxes_data = boxes.gather(nms, 0).dataSync(); // indexing boxes by nms index
   const scores_data = scores.gather(nms, 0).dataSync(); // indexing scores by nms index
   const classes_data = classes.gather(nms, 0).dataSync(); // indexing classes by nms index
+  console.log("confidence", confidence, "addsaasdds", scores_data);
 
-  renderBoxes(canvasRef, boxes_data as any, scores_data, classes_data, [
+  renderBoxes(canvasRef, boxes_data as any, scores_data, classes_data,confidence/100, [
     xRatio,
     yRatio,
   ]); // render boxes
@@ -107,7 +108,7 @@ export const detect = async (
   const data = {
     boxes: boxes_data,
     scores: scores_data,
-    classes: classes_data
+    classes: classes_data,
   };
   resultsRef.innerHTML = JSON.stringify(data, null, 2);
   return {
@@ -125,7 +126,8 @@ export const detectVideo = (
   vidSource: HTMLVideoElement | any,
   model: any,
   canvasRef: any,
-  resultsRef: any
+  resultsRef: any,
+  confidence: number
 ) => {
   /**
    * Function to detect every frame from video
@@ -137,7 +139,7 @@ export const detectVideo = (
       return; // handle if source is closed
     }
 
-    detect(vidSource, model, canvasRef,resultsRef, () => {
+    detect(vidSource, model, canvasRef, resultsRef, confidence, () => {
       requestAnimationFrame(detectFrame); // get another frame
     });
   };

@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
-import SpechService from "../services/spech";
 
 interface SpeechProps {
+  spechResponse: any;
+  setSpechResponse: React.Dispatch<React.SetStateAction<any>>;
   streaming: string | null;
   url: string;
   setStreaming: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export default function Speech({ streaming, url }: SpeechProps) {
+export default function Speech({
+  streaming,
+  url,
+  spechResponse,
+  setSpechResponse,
+}: SpeechProps) {
   const [finalTranscript, setFinalTranscript] = useState("");
   const [interimTranscript, setInterimTranscript] = useState("");
+
   useEffect(() => {
     let recognition: SpeechRecognition | undefined;
 
@@ -30,7 +37,9 @@ export default function Speech({ streaming, url }: SpeechProps) {
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const transcript = event.results[i][0].transcript;
           if (event.results[i].isFinal) {
-            setFinalTranscript((prevTranscript) => prevTranscript + " " + transcript);
+            setFinalTranscript(
+              (prevTranscript) => prevTranscript + " " + transcript
+            );
           } else {
             interim += transcript;
           }
@@ -43,8 +52,7 @@ export default function Speech({ streaming, url }: SpeechProps) {
 
     const fetchSpeech = async () => {
       if (streaming === "yt") {
-        const spech = await SpechService.getSpech(url);
-        console.log(spech)
+        setSpechResponse("Loading...");
       }
     };
 
@@ -55,7 +63,7 @@ export default function Speech({ streaming, url }: SpeechProps) {
         recognition.stop();
       }
     };
-  }, [streaming, url]);
+  }, [streaming, url]); // Agregamos spechResponse a las dependencias
 
   return (
     <div>
@@ -63,6 +71,12 @@ export default function Speech({ streaming, url }: SpeechProps) {
         <>
           <p>Transcript:</p>
           <p>{finalTranscript + " " + interimTranscript}</p>
+        </>
+      )}
+      {streaming === "yt" && (
+        <>
+          <p>Transcript:</p>
+          <p>{spechResponse}</p>
         </>
       )}
     </div>

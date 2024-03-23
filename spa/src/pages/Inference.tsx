@@ -20,6 +20,8 @@ export default function Inference({
 }: UploaderProps) {
   const [streaming, setStreaming] = useState<string | null>(null); // streaming state
   const [spechResponse, setSpechResponse] = useState<any>(null); // spech response state
+  const [confidence, setConfidence] = useState(50);
+  const confidenceRef = useRef(confidence);
   const imageRef = useRef(null);
   const cameraRef = useRef(null);
   const videoRef = useRef(null);
@@ -53,8 +55,11 @@ export default function Inference({
         }}
       >
         <Params
-        spechResponse={spechResponse}
-        setSpechResponse={setSpechResponse}
+        confidenceRef={confidenceRef}
+          confidence={confidence}
+          setConfidence={setConfidence}
+          spechResponse={spechResponse}
+          setSpechResponse={setSpechResponse}
           url={url}
           setUrl={setUrl}
           recorder={recorder}
@@ -79,6 +84,9 @@ export default function Inference({
       >
         <div>
           <Video
+          confidenceRef={confidenceRef}
+            confidence={confidence}
+            setConfidence={setConfidence}
             resultsRef={resultsRef}
             url={url}
             ytRef={ytRef}
@@ -102,7 +110,13 @@ export default function Inference({
             <Results resultsRef={resultsRef} />
           </div>
           <div style={{ ...border, margin: 10, width: "50%", height: "100%" }}>
-            <Spech spechResponse={spechResponse} setSpechResponse={setSpechResponse}  url={url} streaming={streaming} setStreaming={setStreaming} />
+            <Spech
+              spechResponse={spechResponse}
+              setSpechResponse={setSpechResponse}
+              url={url}
+              streaming={streaming}
+              setStreaming={setStreaming}
+            />
           </div>
         </div>
       </div>

@@ -14,6 +14,7 @@ export const renderBoxes = (
   scores_data: Array<any>,
   classes_data: Array<any>,
   confidence: number,
+  object: string,
   ratios: Array<number>
 ) => {
   const ctx = canvasRef.getContext("2d");
@@ -31,6 +32,9 @@ export const renderBoxes = (
 
   for (let i = 0; i < scores_data.length; ++i) {
     if (scores_data[i] < confidence) continue;
+    if(object!==null){
+      if(labels[classes_data[i]]!==object) continue;
+    }
     // filter based on class threshold
     const klass = labels[classes_data[i]];
     const color = colors.get(classes_data[i]);

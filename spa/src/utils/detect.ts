@@ -51,6 +51,7 @@ export const detect = async (
   canvasRef: any,
   resultsRef: any,
   confidence: number,
+  object: string,
   callback = () => {}
 ) => {
   const [modelWidth, modelHeight] = model.inputShape.slice(1, 3); // get model width and height
@@ -94,12 +95,26 @@ export const detect = async (
   const boxes_data = boxes.gather(nms, 0).dataSync(); // indexing boxes by nms index
   const scores_data = scores.gather(nms, 0).dataSync(); // indexing scores by nms index
   const classes_data = classes.gather(nms, 0).dataSync(); // indexing classes by nms index
-  console.log("confidence", confidence, "addsaasdds", scores_data);
+  console.log(
+    "confidence",
+    confidence,
+    "scores:",
+    scores_data,
+    "object:",
+    object,
+    "classes:",
+    classes_data
+  );
 
-  renderBoxes(canvasRef, boxes_data as any, scores_data, classes_data,confidence/100, [
-    xRatio,
-    yRatio,
-  ]); // render boxes
+  renderBoxes(
+    canvasRef,
+    boxes_data as any,
+    scores_data,
+    classes_data,
+    confidence / 100,
+    object,
+    [xRatio, yRatio]
+  ); // render boxes
   tf.dispose([res, transRes, boxes, scores, classes, nms]); // clear memory
 
   callback();
@@ -127,7 +142,8 @@ export const detectVideo = (
   model: any,
   canvasRef: any,
   resultsRef: any,
-  confidence: number
+  confidence: number,
+  object: string
 ) => {
   /**
    * Function to detect every frame from video
@@ -139,7 +155,7 @@ export const detectVideo = (
       return; // handle if source is closed
     }
 
-    detect(vidSource, model, canvasRef, resultsRef, confidence, () => {
+    detect(vidSource, model, canvasRef, resultsRef, confidence, object, () => {
       requestAnimationFrame(detectFrame); // get another frame
     });
   };

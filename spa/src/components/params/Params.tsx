@@ -20,6 +20,8 @@ interface ParamsProps {
   confidence: number;
   setConfidence: React.Dispatch<React.SetStateAction<number>>;
   confidenceRef: any;
+  object: string;
+  setObject: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function Params({
@@ -39,6 +41,8 @@ export default function Params({
   streaming,
   setStreaming,
   confidenceRef,
+  object,
+  setObject,
 }: ParamsProps) {
   const divStyle = {
     margin: "10px",
@@ -46,7 +50,13 @@ export default function Params({
   return (
     <div style={{ maxHeight: "100%", overflow: "auto" }}>
       <div style={{ ...divStyle }}>
-        <ModelParams confidenceRef={confidenceRef} confidence={confidence} setConfidence={setConfidence} />
+        <ModelParams
+          object={object}
+          setObject={setObject}
+          confidenceRef={confidenceRef}
+          confidence={confidence}
+          setConfidence={setConfidence}
+        />
       </div>
       <div style={{ ...divStyle }}>
         <Uploader

@@ -19,6 +19,8 @@ interface VideoProps {
   confidence: number;
   setConfidence: React.Dispatch<React.SetStateAction<number>>;
   confidenceRef: any;
+  object: string;
+  setObject: React.Dispatch<React.SetStateAction<string>>;
 }
 export default function Video({
   resultsRef,
@@ -29,6 +31,7 @@ export default function Video({
   canvasRef,
   streaming,
   confidenceRef,
+  object
 }: VideoProps) {
   const [loading, setLoading] = useState({ loading: true, progress: 0 }); // loading state
   const [model, setModel] = useState({
@@ -87,7 +90,8 @@ export default function Video({
                   model,
                   canvasRef.current,
                   resultsRef.current,
-                  confidenceRef.current
+                  confidenceRef.current,
+                  object
                 );
               }
             }}
@@ -103,7 +107,8 @@ export default function Video({
                   model,
                   canvasRef.current,
                   resultsRef.current,
-                  confidenceRef.current
+                  confidenceRef.current,
+                  object
                 );
               }
             }}
@@ -119,7 +124,8 @@ export default function Video({
                   model,
                   canvasRef.current,
                   resultsRef.current,
-                  confidenceRef.current
+                  confidenceRef.current,
+                  object
                 );
               }
             }}
@@ -135,7 +141,8 @@ export default function Video({
                   model,
                   canvasRef.current,
                   resultsRef.current,
-                  confidenceRef.current
+                  confidenceRef.current,
+                  object
                 );
               }
             }}

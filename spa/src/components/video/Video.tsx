@@ -16,6 +16,9 @@ interface VideoProps {
   ytRef: React.RefObject<HTMLVideoElement>;
   streaming: string | null;
   setStreaming: React.Dispatch<React.SetStateAction<string | null>>;
+  confidence: number;
+  setConfidence: React.Dispatch<React.SetStateAction<number>>;
+  confidenceRef: any;
 }
 export default function Video({
   resultsRef,
@@ -25,6 +28,7 @@ export default function Video({
   ytRef,
   canvasRef,
   streaming,
+  confidenceRef,
 }: VideoProps) {
   const [loading, setLoading] = useState({ loading: true, progress: 0 }); // loading state
   const [model, setModel] = useState({
@@ -78,7 +82,13 @@ export default function Video({
             ref={imageRef}
             onLoad={() => {
               if (imageRef.current) {
-                detect(imageRef.current, model, canvasRef.current,resultsRef.current);
+                detect(
+                  imageRef.current,
+                  model,
+                  canvasRef.current,
+                  resultsRef.current,
+                  confidenceRef.current
+                );
               }
             }}
           />
@@ -88,7 +98,13 @@ export default function Video({
             ref={cameraRef}
             onPlay={() => {
               if (cameraRef.current) {
-                detectVideo(cameraRef.current, model, canvasRef.current,resultsRef.current);
+                detectVideo(
+                  cameraRef.current,
+                  model,
+                  canvasRef.current,
+                  resultsRef.current,
+                  confidenceRef.current
+                );
               }
             }}
           />
@@ -98,7 +114,13 @@ export default function Video({
             ref={videoRef}
             onPlay={() => {
               if (videoRef.current) {
-                detectVideo(videoRef.current, model, canvasRef.current,resultsRef.current);
+                detectVideo(
+                  videoRef.current,
+                  model,
+                  canvasRef.current,
+                  resultsRef.current,
+                  confidenceRef.current
+                );
               }
             }}
           />
@@ -108,7 +130,13 @@ export default function Video({
             ref={ytRef}
             onPlay={() => {
               if (ytRef.current) {
-                detectVideo(ytRef.current, model, canvasRef.current,resultsRef.current);
+                detectVideo(
+                  ytRef.current,
+                  model,
+                  canvasRef.current,
+                  resultsRef.current,
+                  confidenceRef.current
+                );
               }
             }}
           />

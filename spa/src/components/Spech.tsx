@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { BsBodyText } from "react-icons/bs";
 interface SpeechProps {
   spechResponse: any;
   setSpechResponse: React.Dispatch<React.SetStateAction<any>>;
@@ -18,11 +18,11 @@ export default function Speech({
   const [interimTranscript, setInterimTranscript] = useState("");
 
   useEffect(() => {
-    let recognition: SpeechRecognition | undefined;
+    let recognition: any | undefined;
 
     if (streaming === "camera") {
       const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
+        (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       recognition = new SpeechRecognition();
 
       recognition.continuous = true;
@@ -32,7 +32,7 @@ export default function Speech({
         console.log("Voice is activated, you can speak to microphone.");
       };
 
-      recognition.onresult = (event) => {
+      recognition.onresult = (event: any) => {
         let interim = "";
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const transcript = event.results[i][0].transcript;
@@ -66,7 +66,14 @@ export default function Speech({
   }, [streaming, url]); // Agregamos spechResponse a las dependencias
 
   return (
-    <div>
+    <div
+      style={{
+        height: "100%",
+        maxHeight: "100%",
+        overflow: "auto",
+        alignContent: "center",
+      }}
+    >
       {streaming === "camera" && (
         <>
           <p>Transcript:</p>
@@ -78,6 +85,9 @@ export default function Speech({
           <p>Transcript:</p>
           <p>{spechResponse}</p>
         </>
+      )}
+      {streaming === null && (
+        <BsBodyText style={{ margin: "auto" }} size={320} color="gray" />
       )}
     </div>
   );

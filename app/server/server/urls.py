@@ -22,6 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", views.api, name="api"),
     path("api/spech", views.spech, name="spech"),
+    path("api/videoSpech", views.videoSpech, name="videoSpech"),
     path("api/test", views.test, name="test"),
     path("api/insert", views.insert, name="insert")
 ]

@@ -22,7 +22,8 @@ export default function Speech({
 
     if (streaming === "camera") {
       const SpeechRecognition =
-        (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        (window as any).SpeechRecognition ||
+        (window as any).webkitSpeechRecognition;
       recognition = new SpeechRecognition();
 
       recognition.continuous = true;
@@ -54,6 +55,9 @@ export default function Speech({
       if (streaming === "yt") {
         setSpechResponse("Loading...");
       }
+      if (streaming === "video") {
+        setSpechResponse("Loading...");
+      }
     };
 
     fetchSpeech();
@@ -81,6 +85,12 @@ export default function Speech({
         </>
       )}
       {streaming === "yt" && (
+        <>
+          <p>Transcript:</p>
+          <p>{spechResponse}</p>
+        </>
+      )}
+      {streaming === "video" && (
         <>
           <p>Transcript:</p>
           <p>{spechResponse}</p>

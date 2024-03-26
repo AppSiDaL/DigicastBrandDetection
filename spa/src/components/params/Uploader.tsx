@@ -5,6 +5,7 @@ import { Card, CardContent } from "../ui/card";
 import { cardStyle, colors } from "@/utils";
 import { Label } from "../ui/label";
 import { IoCloseOutline } from "react-icons/io5";
+import SpechService from "../../services/spech";
 
 interface UploaderProps {
   imageRef: React.RefObject<HTMLImageElement>;
@@ -12,10 +13,13 @@ interface UploaderProps {
   videoRef: React.RefObject<HTMLVideoElement>;
   cameraRef: React.RefObject<HTMLVideoElement>;
   streaming: string | null;
+  setSpechResponse:any,
+  spechResponse:any,
   setStreaming: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export default function Uploader({
+  setSpechResponse,
   imageRef,
   videoRef,
   streaming,
@@ -83,6 +87,12 @@ export default function Uploader({
           setStreaming("image" as "image" | null); // set streaming to image
         }
       } else if (file.type.startsWith("video")) {
+        SpechService.getSpechVideo(file)
+          .then((data) => {
+            setSpechResponse(data.spech)
+            console.log(data);
+          })
+          .catch((error) => console.log(error));
         if (videoRef.current) {
           videoRef.current.src = url; // set video source
           videoRef.current.style.display = "block"; // show video

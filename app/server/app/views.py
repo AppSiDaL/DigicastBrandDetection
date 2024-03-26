@@ -20,7 +20,6 @@ from pydub import AudioSegment
 import shutil
 
 
-
 def create_detection_message(
     class_name,
     detection_type,
@@ -129,12 +128,13 @@ def send_email_notification(content):
         smtp_server.sendmail(sender, recipients, msg.as_string())
     print("Message sent!")
 
+
 def send_messenger_notification(content):
     api_key = "OFW0mdCdSbut1Bfk"
-    url=f"https://api.callmebot.com/facebook/send.php?apikey={api_key}&text={content}"
+    url = f"https://api.callmebot.com/facebook/send.php?apikey={api_key}&text={content}"
     response = requests.get(url)
     return response
-    
+
 
 def send_notifications(data):
     send_discord_notification(data)
@@ -252,7 +252,6 @@ def insert(request):
         source,
         model_info,
         media_link,
-
     )
     send_notifications(
         create_detection_message(
@@ -272,13 +271,27 @@ def insert(request):
 
 @csrf_exempt
 def extract_audio(url, type):
+    print(url, "---------------", type)
+    shutil.rmtree("./audio", ignore_errors=True)
+    os.makedirs("./audio")
     if type == "video":
+
         video = VideoFileClip(url)
         audio = video.audio
-        audio.write_audiofile("audio.mp3")
+        audio_file_path = "audio/audio.mp3"
+        audio.write_audiofile(audio_file_path)
         audio.close()
         video.close()
-        return audio, None
+
+        # Convert mp3 file to wav
+        sound = AudioSegment.from_mp3(audio_file_path)
+        dst = "audio/audio.wav"
+        sound.export(dst, format="wav")
+        AUDIO_FILE = path.join(
+            path.dirname(path.realpath(__file__)), "../audio/audio.wav"
+        )
+
+        return AUDIO_FILE, None
     elif type == "youtube":
         ydl_opts = {
             "format": "bestaudio/best",
@@ -291,8 +304,7 @@ def extract_audio(url, type):
                 }
             ],
         }
-        shutil.rmtree("./audio", ignore_errors=True)
-        os.makedirs("./audio")
+
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
 
@@ -315,7 +327,9 @@ def extract_audio(url, type):
 
             sound = AudioSegment.from_mp3(src)
             sound.export(dst, format="wav")
-            AUDIO_FILE = path.join(path.dirname(path.realpath(__file__)), "../audio/test.wav")
+            AUDIO_FILE = path.join(
+                path.dirname(path.realpath(__file__)), "../audio/test.wav"
+            )
 
         # Get video title
         yt = YouTube(url)
@@ -328,7 +342,7 @@ def extract_audio(url, type):
 def spech(request):
     data = json.loads(request.body)
     print(data)
-    url=data.get("url")
+    url = data.get("url")
     import speech_recognition as sr
 
     print("initiating speech recognition")
@@ -348,3 +362,46 @@ def spech(request):
         print("Sphinx could not understand audio")
     except sr.RequestError as e:
         print("Sphinx error; {0}".format(e))
+
+
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.conf import settings
+import os
+
+
+@csrf_exempt
+def videoSpech(request):
+    if request.method == "POST":
+        file = request.FILES["file"]  # get the file
+        file_name = default_storage.save(
+            file.name, ContentFile(file.read())
+        )  # save the file
+        file_path = os.path.join(
+            settings.MEDIA_ROOT, file_name
+        )  # get the path of the file
+
+        import speech_recognition as sr
+
+        print("initiating speech recognition")
+        r = sr.Recognizer()
+        try:
+            AUDIO_FILE, title = extract_audio(file_path, "video")
+        except requests.exceptions.Timeout:
+            print("Timeout occurred while extracting audio")
+            return JsonResponse({"error": "Timeout occurred while extracting audio"})
+        try:
+            with sr.AudioFile(AUDIO_FILE) as source:
+                audio = r.record(source)
+            try:
+                spech = r.recognize_google(audio, language="es-MX")
+                spech = spech.lower()
+                return JsonResponse({"spech": spech})
+            except sr.UnknownValueError:
+                print("Sphinx could not understand audio")
+            except sr.RequestError as e:
+                print("Sphinx error; {0}".format(e))
+        finally:
+            os.remove(file_path) 
+    else:
+        return JsonResponse({"error": "Invalid request method"})

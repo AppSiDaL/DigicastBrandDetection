@@ -5,11 +5,11 @@ import { Label } from "../ui/label";
 import { CiLink } from "react-icons/ci";
 import { Input } from "../ui/input";
 import { IoCloseOutline } from "react-icons/io5";
-import SpechService from "../../services/spech"
+import SpechService from "../../services/spech";
 
 interface UploaderProps {
-  setSpechResponse:any,
-  spechResponse:any,
+  setSpechResponse: any;
+  spechResponse: any;
   ytRef: any;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   streaming: string | null;
@@ -22,7 +22,6 @@ interface UploaderProps {
 
 export default function URLInput({
   setSpechResponse,
-  spechResponse,
   url,
   setUrl,
   ytRef,
@@ -58,7 +57,7 @@ export default function URLInput({
       setStreaming("yt"); // set streaming to camera
     }
   };
-  const handleClick = async() => {
+  const handleClick = async () => {
     const URL =
       window.location.protocol +
       "//" +
@@ -72,12 +71,13 @@ export default function URLInput({
       setStreaming("yt"); // set streaming to camera
     }
     handlePlay();
-    SpechService.getSpech(url).then((response) => {
-      setSpechResponse(response.spech)
-    }).catch((error) => {
-      console.log(error)
-    })
-
+    SpechService.getSpech(url)
+      .then((response) => {
+        setSpechResponse(response.spech);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const endStream = () => {
@@ -109,7 +109,7 @@ export default function URLInput({
                 onClick={() => {
                   console.log(ytRef.current);
                   if (ytRef.current) {
-                 handleClick()
+                    handleClick();
                   }
                 }}
               />

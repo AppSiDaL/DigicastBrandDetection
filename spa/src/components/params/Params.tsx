@@ -60,6 +60,8 @@ export default function Params({
       </div>
       <div style={{ ...divStyle }}>
         <Uploader
+          spechResponse={spechResponse}
+          setSpechResponse={setSpechResponse}
           setStreaming={setStreaming}
           streaming={streaming}
           imageRef={imageRef}

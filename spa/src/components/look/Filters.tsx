@@ -1,5 +1,5 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -7,15 +7,15 @@ import {
   SelectItem,
   SelectLabel,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-export default function Filters() {
+  SelectValue
+} from '@/components/ui/select'
+import { Button } from '@/components/ui/button'
+export default function Filters (): JSX.Element {
   return (
     <div>
       <Label htmlFor="email">Filtros</Label>
 
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
         <div>
           <Select>
             <SelectTrigger className="w-[180px]">
@@ -58,5 +58,5 @@ export default function Filters() {
         </div>
       </div>
     </div>
-  );
+  )
 }

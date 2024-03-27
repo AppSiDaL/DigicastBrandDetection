@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "eslint": "eslint --ext .tsx,.ts src/ ",
+    "lint": "eslint ./src --ext ts,tsx --ignore-pattern './src/components/ui/*' --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -46,7 +47,7 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.4.3",
+    "typescript": "^4.3.5",
     "vite": "^5.1.4"
   }
 }

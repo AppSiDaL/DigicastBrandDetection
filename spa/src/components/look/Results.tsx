@@ -1,8 +1,7 @@
-import React from "react";
-import Visualization from "./Visualization";
-import Data from "./Data";
+import Visualization from './Visualization'
+import Data from './Data'
 
-export default function Results() {
+export default function Results (): JSX.Element {
   return (
     <div>
       <div>
@@ -12,5 +11,5 @@ export default function Results() {
         <Data />
       </div>
     </div>
-  );
+  )
 }

@@ -1,38 +1,38 @@
-const url = "http://localhost:8000/api/spech";
-const getSpech = (videoURL: string) => {
+const url = 'http://localhost:8000/api/spech'
+const getSpech = async (videoURL: string): Promise<any> => {
   const payload = {
-    url: videoURL,
-  };
+    url: videoURL
+  }
 
-  return fetch(url, {
-    method: "POST",
+  return await fetch(url, {
+    method: 'POST',
     body: JSON.stringify(payload),
     headers: {
-      "Content-Type": "application/json",
-    },
+      'Content-Type': 'application/json'
+    }
   })
-    .then((response) => response.json())
+    .then(async (response) => await response.json())
     .then((data) => {
-      return data;
+      return data
     })
-    .catch((error) => console.log(error));
-};
+    .catch((error) => { console.log(error) })
+}
 
-const getSpechVideo = (file: any) => {
-  const url = "http://localhost:8000/api/videoSpech";
+const getSpechVideo = async (file: any): Promise<any> => {
+  const url = 'http://localhost:8000/api/videoSpech'
 
-  const formData = new FormData();
-  formData.append("file", file);
+  const formData = new FormData()
+  formData.append('file', file as string)
 
-  return fetch(url, {
-    method: "POST",
-    body: formData,
+  return await fetch(url, {
+    method: 'POST',
+    body: formData
   })
-    .then((response) => response.json())
+    .then(async (response) => await response.json())
     .then((data) => {
-      return data;
+      return data
     })
-    .catch((error) => console.log(error));
-};
+    .catch((error) => { console.log(error) })
+}
 
-export default { getSpech, getSpechVideo };
+export default { getSpech, getSpechVideo }

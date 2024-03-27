@@ -1,47 +1,47 @@
-import Params from "@/components/look/Params";
-import Results from "@/components/look/Results";
+import Params from '@/components/look/Params'
+import Results from '@/components/look/Results'
 
-export default function Look() {
+export default function Look (): JSX.Element {
   const border = {
-    border: "2.5px",
-    borderColor: "#5C5C5C",
-    borderStyle: "solid",
-    borderRadius: 5,
-  };
+    border: '2.5px',
+    borderColor: '#5C5C5C',
+    borderStyle: 'solid',
+    borderRadius: 5
+  }
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "row",
-        width: "100%",
-        height: "100vh",
-        padding: 10,
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        height: '100vh',
+        padding: 10
       }}
     >
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
+          display: 'flex',
+          justifyContent: 'center',
           padding: 10,
-          width: "30%",
-          height: "100%",
+          width: '30%',
+          height: '100%',
           ...border,
-          marginRight: 5,
+          marginRight: 5
         }}
       >
         <Params />
       </div>
       <div
         style={{
-          width: "70%",
-          height: "100%",
+          width: '70%',
+          height: '100%',
           ...border,
           marginLeft: 5,
-          overflow: "auto",
+          overflow: 'auto'
         }}
       >
         <Results />
       </div>
     </div>
-  );
+  )
 }

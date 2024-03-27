@@ -6,5 +6,7 @@ export const cardStyle = {
 };
 
 export const colors={
-    label:"#363636"
+    label:"#363636",
+    buttonBorder:"#A6A6A6",
+    buttonBackground:"#F2F2F2"
 }

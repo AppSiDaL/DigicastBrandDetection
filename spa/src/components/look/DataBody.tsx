@@ -1,10 +1,9 @@
-import React from "react";
-import { ResultsTable } from "./ResultsTable";
+import { ResultsTable } from './ResultsTable'
 
-export default function DataBody() {
+export default function DataBody (): JSX.Element {
   return (
     <div>
       <ResultsTable />
     </div>
-  );
+  )
 }

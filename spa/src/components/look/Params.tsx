@@ -1,10 +1,9 @@
-import React from "react";
-import { Search } from "./Search";
-import { SelectClass } from "./SelectClass";
-import { SelectTable } from "./SelectTable";
-import Filters from "./Filters";
+import { Search } from './Search'
+import { SelectClass } from './SelectClass'
+import { SelectTable } from './SelectTable'
+import Filters from './Filters'
 
-export default function Params() {
+export default function Params (): JSX.Element {
   return (
     <div>
       <Search />
@@ -12,5 +11,5 @@ export default function Params() {
       <SelectTable />
       <Filters />
     </div>
-  );
+  )
 }

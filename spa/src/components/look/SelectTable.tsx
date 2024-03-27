@@ -1,5 +1,4 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -7,10 +6,10 @@ import {
   SelectItem,
   SelectLabel,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  SelectValue
+} from '@/components/ui/select'
 
-export function SelectTable() {
+export function SelectTable (): JSX.Element {
   return (
     <div className="grid w-full max-w-sm items-center gap-1.5">
       <Label htmlFor="email">Selecciona Tabla</Label>
@@ -31,5 +30,5 @@ export function SelectTable() {
         </SelectContent>
       </Select>
     </div>
-  );
+  )
 }

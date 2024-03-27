@@ -1,7 +1,9 @@
+import { Button } from "../ui/button";
 import ModelParams from "./ModelParams";
 import Uploader from "./Uploader";
 import URLInput from "./URLInput";
 import WebCam from "./WebCam";
+import { useNavigate } from "react-router-dom";
 
 interface ParamsProps {
   spechResponse: any;
@@ -47,6 +49,7 @@ export default function Params({
   const divStyle = {
     margin: "10px",
   };
+  const navigator = useNavigate();
   return (
     <div style={{ maxHeight: "100%", overflow: "auto" }}>
       <div style={{ ...divStyle }}>
@@ -90,6 +93,16 @@ export default function Params({
           streaming={streaming}
           cameraRef={cameraRef}
         />
+      </div>
+      <div style={{ ...divStyle }}>
+        <Button variant="destructive" onClick={() => setStreaming("none")}>
+          Stop
+        </Button>
+      </div>
+      <div style={{ ...divStyle }}>
+        <Button variant="link" onClick={() => navigator("/look")}>
+          Go To Look
+        </Button>
       </div>
     </div>
   );

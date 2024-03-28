@@ -20,16 +20,20 @@ interface ModelParamsProps {
   confidence: number
   setConfidence: React.Dispatch<React.SetStateAction<number>>
   confidenceRef: any
+  model: string
+  setModel: React.Dispatch<React.SetStateAction<string>>
 }
 
 export default function ModelParams ({
   confidence,
   confidenceRef,
   setConfidence,
+  setObject,
   object,
-  setObject
+  model
 }: ModelParamsProps): JSX.Element {
   const SelectDemo = (): JSX.Element => {
+    const modelClasses: [] = (labels as any)[model]
     return (
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Select onValueChange={(e) => { setObject(e) }} defaultValue={object}>
@@ -39,7 +43,7 @@ export default function ModelParams ({
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Select a Object</SelectLabel>
-              {labels.map((item) => (
+              {modelClasses.map((item: string) => (
                 <SelectItem
                   key={item}
                   value={item}

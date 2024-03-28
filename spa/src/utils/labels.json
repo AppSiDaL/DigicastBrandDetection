@@ -1,4 +1,5 @@
-[
+{
+  "yolov8n": [
     "person",
     "bicycle",
     "car",
@@ -79,4 +80,6 @@
     "teddy bear",
     "hair drier",
     "toothbrush"
-  ]
+  ],
+  "facesn": ["claudia-sheinbaum", "xochitl-galvez"]
+}

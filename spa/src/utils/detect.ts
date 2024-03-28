@@ -2,8 +2,6 @@ import * as tf from '@tensorflow/tfjs'
 import { renderBoxes } from './renderBox'
 import labels from './labels.json'
 
-const numClass = labels.length
-
 /**
  * Preprocess image / frame before forwarded into the model
  * @param {HTMLVideoElement|HTMLImageElement} source
@@ -57,7 +55,8 @@ export const detect = async (
   resultsRef: any,
   confidence: number,
   object: string,
-  callback: () => Promise<void> = async () => {}
+  modelName: string,
+  callback = () => {}
 ): Promise<any> => {
   const [modelWidth, modelHeight] = model.inputShape.slice(1, 3) // get model width and height
 
@@ -82,7 +81,8 @@ export const detect = async (
       )
       .squeeze()
   }) // process boxes [y1, x1, y2, x2]
-
+  const modelClasses: [] = (labels as any)[modelName]
+  const numClass = modelClasses.length
   const [scores, classes] = tf.tidy(() => {
     // class scores
     const rawScores = transRes.slice([0, 0, 4], [-1, -1, numClass]).squeeze(0) // #6 only squeeze axis 0 to handle only 1 class models
@@ -118,22 +118,25 @@ export const detect = async (
     classesData as any[],
     confidence / 100,
     object,
+    modelClasses,
     [xRatio as number, yRatio as number]
   ) // render boxes
   tf.dispose([res, transRes, boxes, scores, classes, nms]) // clear memory
 
-  await callback()
+  callback()
 
   tf.engine().endScope() // end of scoping
+  const klasses: Record<number, unknown> = Object.entries(classesData as Record<string, unknown>).reduce<Record<number, unknown>>((acc, [key, value]) => {
+    acc[Number(key)] = modelClasses[Number(value)]
+    return acc
+  }, {})
+
   const data = {
     boxes: boxesData,
     scores: scoresData,
-    classes: classesData
+    classes: klasses
   }
   resultsRef.innerHTML = JSON.stringify(data, null, 2)
-  return {
-    data
-  }
 }
 
 /**
@@ -148,20 +151,24 @@ export const detectVideo = async (
   canvasRef: any,
   resultsRef: any,
   confidence: number,
-  object: string
+  object: string,
+  modelName: string
 ): Promise<any> => {
   /**
    * Function to detect every frame from video
    */
-  const detectFrame = async (): Promise<void> => {
+  const detectFrame = (): void => {
     if (vidSource.videoWidth === 0 && vidSource.srcObject === null) {
       const ctx = canvasRef.getContext('2d')
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height) // clean canvas
       return // handle if source is closed
     }
-
-    await detect(vidSource as HTMLImageElement | HTMLVideoElement, model, canvasRef, resultsRef, confidence, object, detectFrame)
+    detect(vidSource as HTMLImageElement | HTMLVideoElement, model, canvasRef, resultsRef, confidence, object, modelName, () => {
+      requestAnimationFrame(detectFrame) // get another frame
+    }).catch((error) => {
+      console.error(error)
+    })
   }
 
-  await detectFrame() // initialize to detect every frame
+  detectFrame()// initialize to detect every frame
 }

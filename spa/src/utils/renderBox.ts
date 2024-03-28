@@ -1,5 +1,3 @@
-import labels from './labels.json'
-
 /**
  * Render prediction boxes
  * @param {HTMLCanvasElement} canvasRef canvas tag reference
@@ -15,6 +13,7 @@ export const renderBoxes = (
   classesData: any[],
   confidence: number,
   object: string,
+  labels: string[],
   ratios: number[]
 ): void => {
   const ctx = canvasRef.getContext('2d')

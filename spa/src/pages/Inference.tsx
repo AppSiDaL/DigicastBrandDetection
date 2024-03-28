@@ -18,6 +18,7 @@ export default function Inference ({
   recorder,
   setRecorder
 }: UploaderProps): JSX.Element {
+  const [model, setModel] = useState<string>('yolov8n') // model state
   const [streaming, setStreaming] = useState<string | null>(null) // streaming state
   const [spechResponse, setSpechResponse] = useState<any>(null) // spech response state
   const [confidence, setConfidence] = useState(50)
@@ -56,6 +57,8 @@ export default function Inference ({
         }}
       >
         <Params
+          model={model}
+          setModel={setModel}
           object={object}
           setObject={setObject}
           confidenceRef={confidenceRef}
@@ -87,8 +90,10 @@ export default function Inference ({
       >
         <div>
           <Video
-          object={object}
-          setObject={setObject}
+          modelName={model}
+          setModelName={setModel}
+            object={object}
+            setObject={setObject}
             confidenceRef={confidenceRef}
             confidence={confidence}
             setConfidence={setConfidence}

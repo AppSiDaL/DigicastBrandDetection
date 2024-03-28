@@ -5,7 +5,15 @@ import Loader from './Loader'
 import { detect, detectVideo } from '../../utils/detect'
 import './app.css'
 import { PiMountainsDuotone } from 'react-icons/pi'
-
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '../ui/select'
+import labels from '../../utils/labels.json'
 interface VideoProps {
   resultsRef: React.RefObject<HTMLDivElement>
   imageRef: React.RefObject<HTMLImageElement>
@@ -21,6 +29,8 @@ interface VideoProps {
   confidenceRef: any
   object: string
   setObject: React.Dispatch<React.SetStateAction<string>>
+  modelName: string
+  setModelName: React.Dispatch<React.SetStateAction<string>>
 }
 export default function Video ({
   resultsRef,
@@ -31,7 +41,9 @@ export default function Video ({
   canvasRef,
   streaming,
   confidenceRef,
-  object
+  object,
+  modelName,
+  setModelName
 }: VideoProps): JSX.Element {
   const [loading, setLoading] = useState({ loading: true, progress: 0 }) // loading state
   const [model, setModel] = useState({
@@ -41,43 +53,81 @@ export default function Video ({
 
   // references
   // model configs
-  const modelName = 'yolov8n'
 
   useEffect(() => {
-    tf.ready().then(async () => {
-      const yolov8 = await tf.loadGraphModel(
-        `${window.location.href}/${modelName}_web_model/model.json`,
-        {
-          onProgress: (fractions) => {
-            setLoading({ loading: true, progress: fractions }) // set loading fractions
+    tf.ready()
+      .then(async () => {
+        const yolov8 = await tf.loadGraphModel(
+          `${window.location.href}/${modelName}_web_model/model.json`,
+          {
+            onProgress: (fractions) => {
+              setLoading({ loading: true, progress: fractions }) // set loading fractions
+            }
           }
-        }
-      ) // load model
+        ) // load model
 
-      // warming up model
-      const dummyInput = tf.ones(yolov8.inputs[0].shape ?? [1, 0, 0, 3])
-      const warmupResults = yolov8.execute(dummyInput)
+        // warming up model
+        const dummyInput = tf.ones(yolov8.inputs[0].shape ?? [1, 0, 0, 3])
+        const warmupResults = yolov8.execute(dummyInput)
 
-      setLoading({ loading: false, progress: 1 })
-      setModel({
-        net: yolov8 as any,
-        inputShape: yolov8.inputs[0].shape as any
-      }) // set model & input shape
+        setLoading({ loading: false, progress: 1 })
+        setModel({
+          net: yolov8 as any,
+          inputShape: yolov8.inputs[0].shape as any
+        }) // set model & input shape
 
-      tf.dispose([warmupResults, dummyInput]) // cleanup memory
-    }).catch((error) => {
-      console.error(error)
-    })
-  }, [])
+        tf.dispose([warmupResults, dummyInput]) // cleanup memory
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }, [modelName])
+  const SelectName = (): JSX.Element => {
+    const modelClasses: string[] = Object.keys(labels)
+
+    return (
+      <div>
+        <Select
+          onValueChange={(e) => {
+            setModelName(String(e))
+          }}
+          defaultValue={modelName}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select a object" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {modelClasses.map((item: string) => (
+                <SelectItem
+                  key={item}
+                  value={item}
+                  style={{ textTransform: 'capitalize' }}
+                >
+                  <code className="code">{item}</code>
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+    )
+  }
   return (
     <div className="App">
       {loading.loading && (
         <Loader>Loading model... {(loading.progress * 100).toFixed(2)}%</Loader>
       )}
       <div className="header">
-        <p>
-          Inferencia : <code className="code">{modelName}</code>
-        </p>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center'
+          }}
+        >
+          Inferencia : <SelectName />
+        </div>
       </div>
       {streaming === null && <PiMountainsDuotone size={300} color="gray" />}
       <div className="content">
@@ -93,7 +143,8 @@ export default function Video ({
                   canvasRef.current,
                   resultsRef.current,
                   confidenceRef.current as number,
-                  object
+                  object,
+                  modelName
                 ).catch((error) => {
                   console.error(error)
                 })
@@ -112,8 +163,8 @@ export default function Video ({
                   canvasRef.current,
                   resultsRef.current,
                   confidenceRef.current as number,
-
-                  object
+                  object,
+                  modelName
                 ).catch((error) => {
                   console.error(error)
                 })
@@ -132,7 +183,9 @@ export default function Video ({
                   canvasRef.current,
                   resultsRef.current,
                   confidenceRef.current as number,
-                  object
+                  object,
+                  modelName
+
                 ).catch((error) => {
                   console.error(error)
                 })
@@ -151,7 +204,8 @@ export default function Video ({
                   canvasRef.current,
                   resultsRef.current,
                   confidenceRef.current as number,
-                  object
+                  object,
+                  modelName
                 ).catch((error) => {
                   console.error(error)
                 })

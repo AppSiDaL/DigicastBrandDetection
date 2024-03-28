@@ -24,6 +24,8 @@ interface ParamsProps {
   confidenceRef: any
   object: string
   setObject: React.Dispatch<React.SetStateAction<string>>
+  model: string
+  setModel: React.Dispatch<React.SetStateAction<string>>
 }
 
 export default function Params ({
@@ -44,7 +46,9 @@ export default function Params ({
   setStreaming,
   confidenceRef,
   object,
-  setObject
+  setObject,
+  model,
+  setModel
 }: ParamsProps): JSX.Element {
   const divStyle = {
     margin: '10px'
@@ -54,6 +58,8 @@ export default function Params ({
     <div style={{ maxHeight: '100%', overflow: 'auto' }}>
       <div style={{ ...divStyle }}>
         <ModelParams
+        model={model}
+        setModel={setModel}
           object={object}
           setObject={setObject}
           confidenceRef={confidenceRef}
@@ -95,12 +101,22 @@ export default function Params ({
         />
       </div>
       <div style={{ ...divStyle }}>
-        <Button variant="destructive" onClick={() => { setStreaming('none') }}>
+        <Button
+          variant="destructive"
+          onClick={() => {
+            setStreaming('none')
+          }}
+        >
           Stop
         </Button>
       </div>
       <div style={{ ...divStyle }}>
-        <Button variant="link" onClick={() => { navigator('/look') }}>
+        <Button
+          variant="link"
+          onClick={() => {
+            navigator('/look')
+          }}
+        >
           Go To Look
         </Button>
       </div>
